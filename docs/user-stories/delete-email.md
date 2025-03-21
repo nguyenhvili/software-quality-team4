@@ -1,4 +1,4 @@
-# User Story: [Short title]
+# User Story: Delete email
 ## Description
 As a user, I want to be able to delete an email from the recipient list.
 

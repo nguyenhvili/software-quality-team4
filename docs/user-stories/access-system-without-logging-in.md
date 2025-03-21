@@ -23,3 +23,4 @@ As a user, I want to access the system without providing any credentials, so tha
 ## Estimation
 
 -   Minimal effort, since no authentication or authorization is required.
+-   Story points: 1

@@ -1,16 +1,14 @@
 # User Story: Automate Report Sending
 
 ## Description
-As an user (admin), I want the system to automatically send out reports on a configurable schedule, so that recipients receive updates without requiring manual intervention.
+As an user (admin), I want the system to automatically distribute reports to all recipients simultaneously, so that I don't have to send them individually.
 
 ## Acceptance Criteria
-- The user (admin) can configure the report sending frequency (e.g., daily, weekly, monthly) via a settings page. 
-- At the scheduled time, the system automatically generates the report and sends it to all recipients email addresses. The list of recipients is already defined elsewhere.
-- If the email sending fails, the system logs an error.
-- There is an option for the user to manually trigger the report sending if needed.
+- The system sends latest report to all recipients email addresses.
+- If the email sending fails, the system logs an error and the user is notified.
 
 ## Notes
-- If the email sending fails, user should be notified about it (how?).
+- The recipients list is maintained and defined elsewhere in the system.
 
 ## Estimation
-Story points: 8
+Story points: 3

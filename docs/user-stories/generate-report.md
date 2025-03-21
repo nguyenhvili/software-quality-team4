@@ -3,7 +3,7 @@ As a single user, I want the system to periodically automatically generate new r
 ## Acceptance criteria:
 - Have a new report automatically generated each week.
 ## Out of scope:
-- Manually geenrating reports.
+- Manually generating reports.
 ## Notes:
 - This process runs at a fixed time every week.
 - Might implement some retry logic or failure logging.

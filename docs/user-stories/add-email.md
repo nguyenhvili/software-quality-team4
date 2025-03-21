@@ -1,4 +1,4 @@
-# User Story: [Short title]
+# User Story: Add email
 ## Description
 As a user (admin), I want to add a new email address to the list of recipients, so that an export could be sent to them.
 

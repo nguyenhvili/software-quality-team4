@@ -18,12 +18,12 @@ public class Email : AggregateRoot<EmailId>
         EmailValue = emailValue;
     }
 
-    public static ErrorOr<Email> Create(Guid id, string email)
+    public static ErrorOr<Email> Create(string email)
     {
         if (email == null || email.Length == 0)
         {
             return Error.Validation("The email is empty!");
         }
-        return new Email(EmailId.Create(id), EmailValue.Create(email));
+        return new Email(EmailId.CreateUnique(), EmailValue.Create(email));
     }
 }

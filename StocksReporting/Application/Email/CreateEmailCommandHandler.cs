@@ -15,7 +15,6 @@ public class CreateEmailCommandHandler
     public async Task<ErrorOr<CreateEmailCommand.Result>> Handle(CreateEmailCommand command)
     {
         var emailResult = Domain.Email.Email.Create(
-            command.Id,
             command.EmailValue
         );
 

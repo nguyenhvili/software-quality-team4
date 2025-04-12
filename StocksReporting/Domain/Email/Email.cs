@@ -1,4 +1,5 @@
-﻿using StocksReporting.Domain.Common;
+﻿using ErrorOr;
+using StocksReporting.Domain.Common;
 using StocksReporting.Domain.Email.ValueObjects;
 
 namespace StocksReporting.Domain.Email;
@@ -17,8 +18,12 @@ public class Email : AggregateRoot<EmailId>
         EmailValue = emailValue;
     }
 
-    public static Email Create(Guid id, string email)
+    public static ErrorOr<Email> Create(Guid id, string email)
     {
+        if (email == null || email.Length == 0)
+        {
+            return Error.Validation("The email is empty!");
+        }
         return new Email(EmailId.Create(id), EmailValue.Create(email));
     }
 }

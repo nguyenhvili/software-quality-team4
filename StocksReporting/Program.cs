@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using RegistR.Attributes.Extensions;
+using StocksReporting.Infrastructure;
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +11,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton(builder.Configuration);
+
+var dbString = builder.Configuration.GetConnectionString("DbString");
+builder.Services.InstallRegisterAttribute(Assembly.GetExecutingAssembly());
+builder.Services.AddDbContext<StocksReportingDbContext>(options =>
+{
+    options.UseSqlite(dbString);
+});
 
 var app = builder.Build();
 

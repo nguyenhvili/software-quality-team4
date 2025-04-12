@@ -7,9 +7,9 @@ namespace StocksReporting.Infrastructure.Persistance.Services;
 [Register(ServiceLifetime.Transient, typeof(IQueryObject<>))]
 public class EfCoreQueryObject<TAggregate> : QueryObject<TAggregate> where TAggregate : class
 {
-    private readonly DepartureCustomerServicesDbContext _dbContext;
+    private readonly StocksReportingDbContext _dbContext;
 
-    public EfCoreQueryObject(DepartureCustomerServicesDbContext dbContext)
+    public EfCoreQueryObject(StocksReportingDbContext dbContext)
     {
         _dbContext = dbContext;
         _query = _dbContext.Set<TAggregate>().AsQueryable();

@@ -4,11 +4,11 @@ using StocksReporting.Domain.Email;
 
 namespace StocksReporting.Infrastructure;
 
-public class DepartureCustomerServicesDbContext : DbContext
+public class StocksReportingDbContext : DbContext
 {
-    public DepartureCustomerServicesDbContext() { }
+    public StocksReportingDbContext() { }
 
-    public DepartureCustomerServicesDbContext(DbContextOptions<DepartureCustomerServicesDbContext> options) : base(options)
+    public StocksReportingDbContext(DbContextOptions<StocksReportingDbContext> options) : base(options)
     {
         
     }

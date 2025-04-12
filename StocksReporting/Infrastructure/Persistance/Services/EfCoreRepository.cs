@@ -7,10 +7,10 @@ namespace StocksReporting.Infrastructure.Persistance.Services;
 [Register(ServiceLifetime.Transient, typeof(IRepository<>))]
 public class EfCoreRepository<TAggregate> : IRepository<TAggregate> where TAggregate : class
 {
-    protected readonly DepartureCustomerServicesDbContext _context;
+    protected readonly StocksReportingDbContext _context;
     protected readonly DbSet<TAggregate> _dbSet;
 
-    public EfCoreRepository(DepartureCustomerServicesDbContext context)
+    public EfCoreRepository(StocksReportingDbContext context)
     {
         _context = context;
         _dbSet = _context.Set<TAggregate>();

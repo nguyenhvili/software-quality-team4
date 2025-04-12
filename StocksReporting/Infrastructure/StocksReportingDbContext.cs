@@ -1,0 +1,30 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using StocksReporting.Domain.Email;
+
+namespace StocksReporting.Infrastructure;
+
+public class DepartureCustomerServicesDbContext : DbContext
+{
+    public DepartureCustomerServicesDbContext() { }
+
+    public DepartureCustomerServicesDbContext(DbContextOptions<DepartureCustomerServicesDbContext> options) : base(options)
+    {
+        
+    }
+
+    public DbSet<Email> Tickets { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        return result;
+    }
+}

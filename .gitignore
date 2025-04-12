@@ -1,0 +1,73 @@
+# .NET Core
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]ist/
+[Dd]ebug-AnyCPU/
+[Dd]ebug-x64/
+[Dd]ebug-x86/
+[Dd]ebug-macos/
+[Dd]ebug-linux/
+[Dd]ebug-net6.0/
+[Dd]ebug-net7.0/
+[Dd]ebug-net8.0/
+
+# User-specific files
+.idea/
+.vscode/
+
+# User-specific files (Windows)
+*.user
+*.userosscache
+*.suo
+*.userprefs
+.idea/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer files
+*.pdb
+*.mdb
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+
+# Build results
+bin/
+obj/
+out/
+
+# MAUI-specific
+*.apk
+*.aab
+*.ipa
+*.dSYM/
+*.app
+*.xcodeproj/
+*.xcworkspace/
+.vscode/
+
+# .NET Core SDK and runtime folders
+.nuget/
+packages/
+
+# User-specific folders
+.vs/
+.vs2019/
+.vs2017/
+
+# IntelliJ IDEA
+.idea/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msp
+
+# JetBrains Rider
+.idea/
+*.sln.iml

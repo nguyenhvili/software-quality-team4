@@ -2,7 +2,7 @@
 using RegistR.Attributes.Base;
 using StocksReporting.Application.Services;
 
-namespace StocksReporting.Infrastructure.Persistance.Services;
+namespace StocksReporting.Infrastructure.Persistence.Services;
 
 [Register(ServiceLifetime.Transient, typeof(IQueryObject<>))]
 public class EfCoreQueryObject<TAggregate> : QueryObject<TAggregate> where TAggregate : class

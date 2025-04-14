@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using StocksReporting.Domain.Email;
 using StocksReporting.Domain.Email.ValueObjects;
 
-namespace StocksReporting.Infrastructure.Persistance.Configuration;
+namespace StocksReporting.Infrastructure.Persistence.Configuration;
 
 public class EmailConfiguration : IEntityTypeConfiguration<Email>
 {

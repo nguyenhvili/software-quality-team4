@@ -21,7 +21,7 @@ public class DeleteEmailCommandHandler
             .SingleOrDefault();
         if (email is null)
         {
-            return Error.Validation("Email not found.");
+            return Error.NotFound("Email not found.");
         }
 
         var deleted = await _repository.RemoveAsync(email.Id);

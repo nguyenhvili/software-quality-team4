@@ -2,20 +2,15 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StocksReporting.Infrastructure;
 
 #nullable disable
 
-namespace StocksReporting.Infrastructure.Persistance.Migrations
+namespace StocksReporting.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(StocksReportingDbContext))]
-    [Migration("20250413155319_Initial")]
-    partial class Initial
+    partial class StocksReportingDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");

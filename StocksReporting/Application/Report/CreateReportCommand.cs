@@ -1,10 +1,10 @@
 namespace StocksReporting.Application.Report;
 
-public record CreateReportCommand(string Path)
+public record CreateReportCommand(string Path, DateTime? CreatedAt)
 {
     public record CreatedReport(
         Guid Id,
-        string Path,
+        string FilePath,
         DateTime CreatedAt
     );
 

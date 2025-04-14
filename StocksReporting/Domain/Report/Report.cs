@@ -19,13 +19,14 @@ public class Report : AggregateRoot<ReportId>
         CreatedAt = createdAt;
     }
 
-    public static ErrorOr<Report> Create(string filePath)
+    public static ErrorOr<Report> Create(string filePath, DateTime? createdAt = null)
     {
         if (string.IsNullOrWhiteSpace(filePath))
         {
             return Error.Validation("Report.FilePath", "File path cannot be empty.");
         }
 
-        return new Report(ReportId.CreateUnique(), filePath, DateTime.UtcNow);
+        var time = createdAt ?? DateTime.UtcNow;
+        return new Report(ReportId.CreateUnique(), filePath, time);
     }
 }

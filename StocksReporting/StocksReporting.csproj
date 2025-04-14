@@ -22,8 +22,4 @@
 	<PackageReference Include="WolverineFx.Http" Version="2.17.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructure\Persistance\Migrations\" />
-  </ItemGroup>
-
 </Project>

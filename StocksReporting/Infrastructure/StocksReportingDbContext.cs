@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using StocksReporting.Domain.Email;
+using StocksReporting.Domain.Report;
 
 namespace StocksReporting.Infrastructure;
 
@@ -14,6 +15,8 @@ public class StocksReportingDbContext : DbContext
     }
 
     public DbSet<Email> Tickets { get; set; } = null!;
+    
+    public DbSet<Report> Reports { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

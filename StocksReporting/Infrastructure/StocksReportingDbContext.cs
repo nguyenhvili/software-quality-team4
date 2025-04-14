@@ -14,7 +14,7 @@ public class StocksReportingDbContext : DbContext
         
     }
 
-    public DbSet<Email> Tickets { get; set; } = null!;
+    public DbSet<Email> Emails { get; set; } = null!;
     
     public DbSet<Report> Reports { get; set; } = null!;
 

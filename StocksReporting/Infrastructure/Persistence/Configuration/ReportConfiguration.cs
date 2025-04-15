@@ -26,7 +26,7 @@ public class ReportConfiguration : IEntityTypeConfiguration<Report>
                 value => ReportId.Create(value)
             );
 
-        builder.Property(r => r.FilePath)
+        builder.Property(r => r.ReportPathValue)
             .IsRequired()
             .HasMaxLength(500);
 

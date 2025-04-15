@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StocksReporting", "StocksReporting\StocksReporting.csproj", "{ACADF873-D2F7-46BA-A9BB-9283DCCE698E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{591D691E-C46A-483F-B500-34D3771B529C} = {591D691E-C46A-483F-B500-34D3771B529C}
+	EndProjectSection
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reactfrontend", "ReactFrontend\reactfrontend.esproj", "{591D691E-C46A-483F-B500-34D3771B529C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,12 @@ Global
 		{ACADF873-D2F7-46BA-A9BB-9283DCCE698E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACADF873-D2F7-46BA-A9BB-9283DCCE698E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACADF873-D2F7-46BA-A9BB-9283DCCE698E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591D691E-C46A-483F-B500-34D3771B529C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591D691E-C46A-483F-B500-34D3771B529C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591D691E-C46A-483F-B500-34D3771B529C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{591D691E-C46A-483F-B500-34D3771B529C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591D691E-C46A-483F-B500-34D3771B529C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591D691E-C46A-483F-B500-34D3771B529C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

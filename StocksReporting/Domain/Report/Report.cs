@@ -6,16 +6,16 @@ namespace StocksReporting.Domain.Report;
 
 public class Report : AggregateRoot<ReportId>
 {
-    public string FilePath { get; private set; } = string.Empty;
+    public ReportPathValue ReportPathValue { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     public Report()
     {
     }
 
-    private Report(ReportId reportId, string filePath, DateTime createdAt) : base(reportId)
+    private Report(ReportId reportId, ReportPathValue filePath, DateTime createdAt) : base(reportId)
     {
-        FilePath = filePath;
+        ReportPathValue = filePath;
         CreatedAt = createdAt;
     }
 
@@ -27,6 +27,6 @@ public class Report : AggregateRoot<ReportId>
         }
 
         var time = createdAt ?? DateTime.UtcNow;
-        return new Report(ReportId.CreateUnique(), filePath, time);
+        return new Report(ReportId.CreateUnique(), ReportPathValue.Create(filePath), time);
     }
 }

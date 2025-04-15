@@ -32,7 +32,7 @@ public class CreateReportCommandHandler
         return new CreateReportCommand.Result(
             new CreateReportCommand.CreatedReport(
                 report.Id.Value,
-                report.FilePath,
+                report.ReportPathValue.PathValue,
                 report.CreatedAt
             )
         );

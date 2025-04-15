@@ -89,4 +89,6 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapWolverineEndpoints();
 
+app.MapFallbackToFile("/index.html");
+
 app.Run();

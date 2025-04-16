@@ -33,7 +33,7 @@ public class CsvParser
                 csv.ReadHeader();
                 while (csv.Read())
                 {
-                    if (!Regex.IsMatch(csv.GetField("ticker") ?? "", @"^[A-Z0-9\-\.]+$"))
+                    if (csv.Parser.Count != csv.HeaderRecord?.Length)
                         continue;
 
                     string company = csv.GetField("company");

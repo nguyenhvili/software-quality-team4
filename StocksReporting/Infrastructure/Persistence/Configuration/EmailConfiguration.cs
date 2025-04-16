@@ -5,14 +5,14 @@ using StocksReporting.Domain.Email.ValueObjects;
 
 namespace StocksReporting.Infrastructure.Persistence.Configuration;
 
-public class EmailConfiguration : IEntityTypeConfiguration<Email>
+public class EmailConfiguration : IEntityTypeConfiguration<Domain.Email.Email>
 {
-    public void Configure(EntityTypeBuilder<Email> builder)
+    public void Configure(EntityTypeBuilder<Domain.Email.Email> builder)
     {
         ConfigureEmailsTable(builder);
     }
 
-    private void ConfigureEmailsTable(EntityTypeBuilder<Email> builder)
+    private void ConfigureEmailsTable(EntityTypeBuilder<Domain.Email.Email> builder)
     {
         builder.ToTable(nameof(Email) + "s");
 

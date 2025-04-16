@@ -4,7 +4,7 @@ namespace StocksReporting.Domain.Report.Holding.ValueObjects;
 
 public class Company : ValueObject
 {
-    public string Name { get; set; }
+    public string Name { get; private set; }
 
     private Company(string name)
     {

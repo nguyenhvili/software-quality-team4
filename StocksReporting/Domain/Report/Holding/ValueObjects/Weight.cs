@@ -4,7 +4,7 @@ namespace StocksReporting.Domain.Report.Holding.ValueObjects;
 
 public class Weight : ValueObject
 {
-    public decimal Value { get; set; }
+    public decimal Value { get; private set; }
 
     private Weight(decimal value)
     {

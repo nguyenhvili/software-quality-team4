@@ -1,5 +1,6 @@
 using ErrorOr;
 using StocksReporting.Domain.Common;
+using StocksReporting.Domain.Report.Holding;
 using StocksReporting.Domain.Report.ValueObjects;
 
 namespace StocksReporting.Domain.Report;
@@ -8,18 +9,20 @@ public class Report : AggregateRoot<ReportId>
 {
     public ReportPathValue ReportPathValue { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public IEnumerable<Holding.Holding> Holdings { get; private set; }
 
     public Report()
     {
     }
 
-    private Report(ReportId reportId, ReportPathValue filePath, DateTime createdAt) : base(reportId)
+    private Report(ReportId reportId, ReportPathValue filePath, DateTime createdAt, IEnumerable<Holding.Holding> holdings) : base(reportId)
     {
         ReportPathValue = filePath;
         CreatedAt = createdAt;
+        Holdings = holdings;
     }
 
-    public static ErrorOr<Report> Create(string filePath, DateTime? createdAt = null)
+    public static ErrorOr<Report> Create(string filePath, IEnumerable<Holding.Holding> holdings, DateTime? createdAt = null)
     {
         if (string.IsNullOrWhiteSpace(filePath))
         {
@@ -27,6 +30,6 @@ public class Report : AggregateRoot<ReportId>
         }
 
         var time = createdAt ?? DateTime.UtcNow;
-        return new Report(ReportId.CreateUnique(), ReportPathValue.Create(filePath), time);
+        return new Report(ReportId.CreateUnique(), ReportPathValue.Create(filePath), time, holdings);
     }
 }

@@ -6,6 +6,9 @@ using StocksReporting.Infrastructure;
 using System.Reflection;
 using Wolverine;
 using Wolverine.Http;
+using StocksReporting.Application.Common.Interfaces;
+using StocksReporting.Domain.Common;
+using StocksReporting.Infrastructure.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 

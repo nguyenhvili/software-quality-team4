@@ -12,6 +12,7 @@ public class ReportConfiguration : IEntityTypeConfiguration<Report>
     public void Configure(EntityTypeBuilder<Report> builder)
     {
         ConfigureReportsTable(builder);
+        ConfigureHoldingTable(builder);
     }
 
     private void ConfigureReportsTable(EntityTypeBuilder<Report> builder)
@@ -87,7 +88,7 @@ public class ReportConfiguration : IEntityTypeConfiguration<Report>
                     .HasColumnName("Weight");
             });
 
-            hb.WithOwner().HasForeignKey("ReportId");
+            hb.WithOwner().HasForeignKey(nameof(ReportId));
         });
     }
 }

@@ -9,7 +9,8 @@ public class Report : AggregateRoot<ReportId>
 {
     public ReportPathValue ReportPathValue { get; private set; }
     public DateTime CreatedAt { get; private set; }
-    public IEnumerable<Holding.Holding> Holdings { get; private set; }
+    private List<Holding.Holding> _holdings = new();
+    public IReadOnlyList<Holding.Holding> Holdings => _holdings.AsReadOnly();
 
     public Report()
     {
@@ -19,7 +20,7 @@ public class Report : AggregateRoot<ReportId>
     {
         ReportPathValue = filePath;
         CreatedAt = createdAt;
-        Holdings = holdings;
+        _holdings = holdings.ToList();
     }
 
     public static ErrorOr<Report> Create(string filePath, IEnumerable<Holding.Holding> holdings, DateTime? createdAt = null)

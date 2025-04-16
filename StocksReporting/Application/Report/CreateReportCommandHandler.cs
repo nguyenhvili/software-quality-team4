@@ -30,7 +30,7 @@ public class CreateReportCommandHandler
         {
             var previousHolding = previous.FirstOrDefault(previous => previous.Company.Name.Equals(holding.Company.Name));
 
-            if (previousHolding is not null)
+            if (previousHolding is not null && previousHolding.Shares.Value > 0)
             {
                 holding.UpdateSharesPercent( SharesPercent.Create( Math.Round(((holding.Shares.Value - previousHolding.Shares.Value) / (decimal)previousHolding.Shares.Value) * 100, 2) ) );
             }

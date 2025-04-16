@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using RegistR.Attributes.Extensions;
 using StocksReporting.Infrastructure;
 using System.Reflection;
+using StocksReporting.Application.Common.Interfaces;
+using StocksReporting.Infrastructure.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,8 @@ builder.Services.AddDbContext<StocksReportingDbContext>(options =>
 {
     options.UseSqlite(dbString);
 });
+
+builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
 var app = builder.Build();
 

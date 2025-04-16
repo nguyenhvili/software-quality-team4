@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.OpenApi.Models;
 using RegistR.Attributes.Extensions;
 using StocksReporting.Infrastructure;
 using System.Reflection;
+using Wolverine;
+using Wolverine.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton(builder.Configuration);
 
+builder.Services.AddSwaggerGen(c =>
+{
+
+    c.CustomSchemaIds(s => s.FullName.Replace("+", "."));
+    c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Stocks Reporting", Version = "v1" });
+});
+
 var dbString = builder.Configuration.GetConnectionString("DbString");
 builder.Services.InstallRegisterAttribute(Assembly.GetExecutingAssembly());
 builder.Services.AddDbContext<StocksReportingDbContext>(options =>
@@ -21,13 +32,25 @@ builder.Services.AddDbContext<StocksReportingDbContext>(options =>
     options.UseSqlite(dbString);
 });
 
+builder.Host.UseWolverine();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<StocksReportingDbContext>();
+    dbContext.Database.Migrate();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Stocks Reporting");
+
+
+    });
 }
 
 app.UseHttpsRedirection();
@@ -35,5 +58,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapWolverineEndpoints();
 
 app.Run();

@@ -6,9 +6,9 @@ public class ReportPathValue : ValueObject
 {
     public string PathValue { get; private set; }
 
-    private ReportPathValue(string path)
+    private ReportPathValue(string pathValue)
     {
-        PathValue = path;
+        PathValue = pathValue;
     }
 
     public static ReportPathValue Create(string pathValue) => new(pathValue);

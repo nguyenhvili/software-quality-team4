@@ -11,12 +11,17 @@ public class CreateReportCommandHandler
     private readonly IRepository<Domain.Report.Report> _repository;
     private readonly IQueryObject<Domain.Report.Report> _queryObject;
     private readonly CsvParser _csvParser;
+    private readonly CsvWriter _csvWriter;
 
-    public CreateReportCommandHandler(IRepository<Domain.Report.Report> repository, IQueryObject<Domain.Report.Report> queryObject, CsvParser csvParser)
+    public CreateReportCommandHandler(
+        IRepository<Domain.Report.Report> repository,
+        IQueryObject<Domain.Report.Report> queryObject,
+        CsvParser csvParser, CsvWriter csvWriter)
     {
         _repository = repository;
         _queryObject = queryObject;
         _csvParser = csvParser;
+        _csvWriter = csvWriter;
     }
 
     private void CompareHoldings(IEnumerable<Holding> previous, IEnumerable<Holding> current)
@@ -60,6 +65,8 @@ public class CreateReportCommandHandler
         }
 
         var report = reportResult.Value;
+
+        _csvWriter.Write(report);
 
         await _repository.InsertAsync(report);
         await _repository.CommitAsync();

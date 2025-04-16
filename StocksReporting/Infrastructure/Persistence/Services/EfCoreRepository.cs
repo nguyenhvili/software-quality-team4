@@ -41,4 +41,9 @@ public class EfCoreRepository<TAggregate> : IRepository<TAggregate> where TAggre
     }
 
     public async Task CommitAsync() => await _context.SaveChangesAsync();
+    
+    public async Task<TAggregate?> GetByIdAsync(Guid id)
+    {
+        return await _dbSet.FindAsync(id);
+    }
 }

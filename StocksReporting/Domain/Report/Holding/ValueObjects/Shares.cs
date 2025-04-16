@@ -4,7 +4,7 @@ namespace StocksReporting.Domain.Report.Holding.ValueObjects;
 
 public class Shares : ValueObject
 {
-    public long Value { get; set; }
+    public long Value { get; private set; }
 
     private Shares(long value)
     {

@@ -6,11 +6,11 @@ namespace StocksReporting.Domain.Report.Holding;
 
 public class Holding : AggregateRoot<HoldingId>
 {
-    public Company Company { get; set; }
-    public Ticker Ticker {  get; set; }
-    public Shares Shares { get; set; }
-    public SharesPercent SharesPercent { get; set; }
-    public Weight Weight { get; set; }
+    public Company Company { get; private set; }
+    public Ticker Ticker {  get; private set; }
+    public Shares Shares { get; private set; }
+    public SharesPercent SharesPercent { get; private set; }
+    public Weight Weight { get; private set; }
 
     public Holding()
     {
@@ -47,4 +47,8 @@ public class Holding : AggregateRoot<HoldingId>
         return new Holding(HoldingId.CreateUnique(), Company.Create(company), Ticker.Create(ticker), Shares.Create(shares), SharesPercent.Create(sharesPercent), Weight.Create(weight));
     }
 
+    internal void UpdateSharesPercent(SharesPercent sharesPercent)
+    {
+        this.SharesPercent = sharesPercent;
+    }
 }

@@ -2,6 +2,7 @@
 using System.Reflection;
 using StocksReporting.Domain.Email;
 using StocksReporting.Domain.Report;
+using StocksReporting.Domain.Report.Holding;
 
 namespace StocksReporting.Infrastructure;
 
@@ -17,6 +18,8 @@ public class StocksReportingDbContext : DbContext
     public DbSet<Email> Emails { get; set; } = null!;
     
     public DbSet<Report> Reports { get; set; } = null!;
+
+    public DbSet<Holding> Holdings { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

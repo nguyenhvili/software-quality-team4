@@ -1,5 +1,6 @@
-using System.Net;
-using System.Net.Mail;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 using StocksReporting.Application.Common.Interfaces;
 
 namespace StocksReporting.Infrastructure.Email;
@@ -8,19 +9,24 @@ public class SmtpEmailSender : IEmailSender
 {
     public async Task SendEmailAsync(string to, string subject, string body, string[] attachments)
     {
-        using var message = new MailMessage("no-reply@stocksreporting.com", to, subject, body);
-        foreach (var attachment in attachments)
+        var message = new MimeMessage();
+        message.From.Add(MailboxAddress.Parse("no-reply@stocksreporting.com"));
+        message.To.Add(MailboxAddress.Parse(to));
+        message.Subject = subject;
+
+        var builder = new BodyBuilder { TextBody = body };
+
+        foreach (var attachmentPath in attachments)
         {
-            message.Attachments.Add(new Attachment(attachment));
+            builder.Attachments.Add(attachmentPath);
         }
 
-        using var smtpClient = new SmtpClient("smtp.example.com")
-        {
-            Port = 587,
-            Credentials = new NetworkCredential("yourusername", "yourpassword"),
-            EnableSsl = true
-        };
+        message.Body = builder.ToMessageBody();
 
-        await smtpClient.SendMailAsync(message);
+        using var smtp = new SmtpClient();
+        await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+        await smtp.AuthenticateAsync("pv260reports@gmail.com", "gffd oyas dbhc hkhr");
+        await smtp.SendAsync(message);
+        await smtp.DisconnectAsync(true);
     }
 }

@@ -8,9 +8,9 @@ namespace StocksReporting.Presentation.Email;
 public class ListEmailsEndpoint
 {
     [WolverineGet("emails")]
-    public static async Task<IResult> ListEmailsAsync(Request request, IMessageBus sender)
+    public static async Task<IResult> ListEmailsAsync(int page, int pageSize, IMessageBus sender)
     {
-        var command = new ListEmailsCommand(request.Page, request.PageSize);
+        var command = new ListEmailsCommand(page, pageSize);
 
         var result = await sender.InvokeAsync<ErrorOr<ListEmailsCommand.Result>>(command);
 
@@ -23,8 +23,6 @@ public class ListEmailsEndpoint
             errors => Results.BadRequest(errors.Select(e => e.Code))
         );
     }
-
-    public record Request(int Page, int PageSize);
 
     public record Response(IEnumerable<Response.Email> Emails)
     {

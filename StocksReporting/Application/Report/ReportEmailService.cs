@@ -8,27 +8,30 @@ namespace StocksReporting.Application.Report;
 
 public class ReportEmailService
 {
-    private readonly IRepository<Domain.Email.Email> _emailRepository;
+    private readonly IQueryObject<Domain.Email.Email> _emailQuery;
     private readonly IEmailSender _emailSender;
 
     public ReportEmailService(
-        IRepository<Domain.Email.Email> emailRepository,
+        IQueryObject<Domain.Email.Email> emailQuery,
         IEmailSender emailSender)
     {
-        _emailRepository = emailRepository;
+        _emailQuery = emailQuery;
         _emailSender = emailSender;
     }
 
     public async Task<ErrorOr<SendReportResult>> SendReportAsync(string filePath, List<Guid> emailIds)
     {
-        var emails = new List<string>();
+        var ids = emailIds.ToHashSet();
 
-        foreach (var emailId in emailIds)
-        {
-            var emailEntity = await _emailRepository.GetByIdAsync(emailId);
-            if (emailEntity == null) continue;
-            emails.Add(emailEntity.EmailValue.Value);
-        }
+        // Force evaluation of the query in memory
+        var emailEntities = (await _emailQuery.ExecuteAsync())
+            .Where(e => ids.Contains(e.Id.Value))
+            .ToList();
+
+        var emails = emailEntities
+            .Select(e => e.EmailValue.Value)
+            .Distinct()
+            .ToList();
 
         if (emails.Count == 0)
         {
@@ -40,7 +43,7 @@ public class ReportEmailService
             await _emailSender.SendEmailAsync(
                 to: email,
                 subject: "Weekly Report Export",
-                body: $"Please find the attached report.",
+                body: "Please find the attached report.",
                 attachments: new[] { filePath }
             );
         }

@@ -7,5 +7,4 @@ public interface IRepository<TAggregate> where TAggregate : class
     void Update(TAggregate entity);
     Task<bool> RemoveAsync(object id);
     Task CommitAsync();
-    Task<TAggregate?> GetByIdAsync(Guid id);
 }

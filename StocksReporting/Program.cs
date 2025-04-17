@@ -7,8 +7,11 @@ using System.Reflection;
 using Wolverine;
 using Wolverine.Http;
 using StocksReporting.Application.Common.Interfaces;
+using StocksReporting.Application.Report;
+using StocksReporting.Application.Services;
 using StocksReporting.Domain.Common;
 using StocksReporting.Infrastructure.Email;
+using StocksReporting.Infrastructure.Persistence.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +39,11 @@ builder.Services.AddDbContext<StocksReportingDbContext>(options =>
 });
 
 builder.Host.UseWolverine();
+
+builder.Services.AddScoped<ReportEmailService>();
+builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfCoreRepository<>));
+
 
 var app = builder.Build();
 

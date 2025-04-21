@@ -74,3 +74,8 @@ packages/
 
 # Generated Reports (.csv files)
 /StocksReporting/GeneratedReports/*
+
+# Generated Reports (.csv files)
+/StocksReporting/GeneratedReports/*
+
+node_modules

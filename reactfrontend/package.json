@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.2",
     "@tanstack/react-query-devtools": "^5.74.4",
     "axios": "^1.8.4",
     "react": "^19.0.0",

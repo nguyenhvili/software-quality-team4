@@ -1,5 +1,7 @@
 import { FC } from "react";
 
-export const LoadingPage: FC = () => {
+const LoadingPage: FC = () => {
   return <div>loading page</div>;
 };
+
+export default LoadingPage;

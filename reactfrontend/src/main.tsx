@@ -7,7 +7,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { LoadingPage } from "./app/pages/LoadingPage";
+import LoadingPage from "./app/pages/LoadingPage";
 import App from "./app/App";
 
 const router = createBrowserRouter(

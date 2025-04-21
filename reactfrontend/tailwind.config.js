@@ -1,11 +1,4 @@
 module.exports = {
-  purge: [],
-  darkMode: false,
-  theme: {
-    extend: {},
-  },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
+  mode: 'jit',
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
 }

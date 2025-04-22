@@ -23,14 +23,13 @@ public class Report : AggregateRoot<ReportId>
         _holdings = holdings.ToList();
     }
 
-    public static ErrorOr<Report> Create(string filePath, IEnumerable<Holding.Holding> holdings, DateTime? createdAt = null)
+    public static ErrorOr<Report> Create(string filePath, IEnumerable<Holding.Holding> holdings, DateTime createdAt)
     {
         if (string.IsNullOrWhiteSpace(filePath))
         {
             return Error.Validation("Report.FilePath", "File path cannot be empty.");
         }
 
-        var time = createdAt ?? DateTime.UtcNow;
-        return new Report(ReportId.CreateUnique(), ReportPathValue.Create(filePath), time, holdings);
+        return new Report(ReportId.CreateUnique(), ReportPathValue.Create(filePath), createdAt, holdings);
     }
 }

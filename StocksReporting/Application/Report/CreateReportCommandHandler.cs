@@ -41,7 +41,7 @@ public class CreateReportCommandHandler
     {
         var latestReport = (await _queryObject.OrderBy(report => report.CreatedAt, false).ExecuteAsync()).FirstOrDefault();
 
-        var holdingsResult = await _csvParser.Parse("https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_INNOVATION_ETF_ARKK_HOLDINGS.csv");
+        var holdingsResult = await _csvParser.Parse(command.DownloadPath);
         if (holdingsResult.IsError)
         {
             return holdingsResult.Errors;
@@ -52,9 +52,11 @@ public class CreateReportCommandHandler
         {
             CompareHoldings(latestReport.Holdings, holdings);
         }
+
+        string filePath = $"GeneratedReports/{command.CreatedAt:yyyy-MM-dd}_stocks_report.csv";
         
         var reportResult = Domain.Report.Report.Create(
-            command.Path,
+            filePath,
             holdings,
             DateTime.UtcNow
         );

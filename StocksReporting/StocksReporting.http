@@ -1,6 +1,4 @@
 @StocksReporting_HostAddress = http://localhost:5025
 
-GET {{StocksReporting_HostAddress}}/weatherforecast/
-Accept: application/json
 
 ###

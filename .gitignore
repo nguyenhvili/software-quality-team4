@@ -71,3 +71,6 @@ packages/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Generated Reports (.csv files)
+/StocksReporting/GeneratedReports/*

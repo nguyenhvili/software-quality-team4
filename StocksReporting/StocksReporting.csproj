@@ -29,7 +29,6 @@
   <ItemGroup>
     <Folder Include="Application\Report\" />
     <Folder Include="Domain\Report\ValueObjects\" />
-    <Folder Include="GeneratedReports\" />
     <Folder Include="Presentation\Report\" />
   </ItemGroup>
 

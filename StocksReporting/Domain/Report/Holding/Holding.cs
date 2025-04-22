@@ -32,9 +32,9 @@ public class Holding : AggregateRoot<HoldingId>
         {
             return Error.Validation("The company name is empty!");
         }
-        if (shares <= 0)
+        if (shares < 0)
         {
-            return Error.Validation("The shares cannot be 0 or negative!");
+            return Error.Validation("The shares cannot negative!");
         }
         if (weight < 0)
         {

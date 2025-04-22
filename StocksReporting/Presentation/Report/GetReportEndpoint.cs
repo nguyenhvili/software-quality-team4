@@ -16,7 +16,7 @@ public class GetReportEndpoint
 
         return result.Match(
             Results.Ok,
-            errors => Results.BadRequest(errors.Select(e => e.Code))
+            errors => Results.NotFound(errors.Select(e => e.Code))
         );
     }
 }

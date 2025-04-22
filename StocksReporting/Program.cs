@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using RegistR.Attributes.Extensions;
+using StocksReporting.Application.Services.Schedulling;
 using StocksReporting.Infrastructure;
 using System.Reflection;
 using Wolverine;
@@ -27,6 +29,21 @@ builder.Services.AddSwaggerGen(c =>
     c.CustomSchemaIds(s => s.FullName.Replace("+", "."));
     c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Stocks Reporting", Version = "v1" });
 });
+
+builder.Services.AddQuartz(q =>
+{
+    var jobKey = new JobKey("CreateReportJob");
+
+    q.AddJob<CreateReportJob>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("CreateReportJobTrigger")
+        .WithCronSchedule("0 0 * ? * *"));
+});
+
+builder.Services.AddQuartzHostedService();
+
 
 var dbString = builder.Configuration.GetConnectionString("DbString");
 builder.Services.InstallRegisterAttribute(Assembly.GetExecutingAssembly());

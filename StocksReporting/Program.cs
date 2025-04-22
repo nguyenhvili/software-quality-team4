@@ -2,13 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Quartz;
 using RegistR.Attributes.Extensions;
-using StocksReporting.Application.Services.Schedulling;
 using StocksReporting.Infrastructure;
 using System.Reflection;
 using Wolverine;
 using Wolverine.Http;
 using StocksReporting.Application.Report;
 using StocksReporting.Application.Services;
+using StocksReporting.Application.Services.Scheduling;
 using StocksReporting.Infrastructure.Email;
 using StocksReporting.Infrastructure.Persistence.Services;
 

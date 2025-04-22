@@ -36,10 +36,14 @@ builder.Services.AddQuartz(q =>
 
     q.AddJob<CreateReportJob>(opts => opts.WithIdentity(jobKey));
 
+    // For testing purpose and for M2 showcase, the trigger is set to start at the start of the program
+    // The commented Cron schedule is set to trigger the trigger at midnight, first day of a month
+    // at 0 seconds, 0 minutes, 0 hours, 1st day of month, * every month, ? - any day of the week
     q.AddTrigger(opts => opts
         .ForJob(jobKey)
         .WithIdentity("CreateReportJobTrigger")
-        .WithCronSchedule("0 0 * ? * *"));
+        .StartNow());
+        //.WithCronSchedule("0 0 0 1 * ?"));
 });
 
 builder.Services.AddQuartzHostedService();

@@ -1,4 +1,4 @@
-namespace StocksReporting.Application.Common.Interfaces;
+namespace StocksReporting.Application.Report;
 
 public interface IEmailSender
 {

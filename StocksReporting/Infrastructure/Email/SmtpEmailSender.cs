@@ -1,7 +1,7 @@
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
-using StocksReporting.Application.Common.Interfaces;
+using StocksReporting.Application.Report;
 
 namespace StocksReporting.Infrastructure.Email;
 

@@ -1,15 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.OpenApi.Models;
 using RegistR.Attributes.Extensions;
 using StocksReporting.Infrastructure;
 using System.Reflection;
 using Wolverine;
 using Wolverine.Http;
-using StocksReporting.Application.Common.Interfaces;
 using StocksReporting.Application.Report;
 using StocksReporting.Application.Services;
-using StocksReporting.Domain.Common;
 using StocksReporting.Infrastructure.Email;
 using StocksReporting.Infrastructure.Persistence.Services;
 

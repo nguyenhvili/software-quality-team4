@@ -1,5 +1,5 @@
 using ErrorOr;
-using StocksReporting.Application.Common.Interfaces;
+using StocksReporting.Application.Report;
 using StocksReporting.Application.Services;
 using StocksReporting.Domain.Common;
 using StocksReporting.Domain.Email;

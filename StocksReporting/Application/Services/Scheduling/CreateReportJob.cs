@@ -1,7 +1,7 @@
 ﻿using Quartz;
 using StocksReporting.Application.Report;
 
-namespace StocksReporting.Application.Services.Schedulling;
+namespace StocksReporting.Application.Services.Scheduling;
 
 public class CreateReportJob : IJob
 {

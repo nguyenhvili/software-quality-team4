@@ -1,6 +1,8 @@
+using StocksReporting.Application.Common;
+
 namespace StocksReporting.Application.Report;
 
-public record ListReportsCommand(int Page, int PageSize)
+public record ListReportsCommand(Paging Paging)
 {
     public record Report(Guid Id, DateTime CreatedAt);
 

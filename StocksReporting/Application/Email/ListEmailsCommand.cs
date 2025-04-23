@@ -1,6 +1,8 @@
-﻿namespace StocksReporting.Application.Email;
+﻿using StocksReporting.Application.Common;
 
-public record ListEmailsCommand(int Page, int PageSize)
+namespace StocksReporting.Application.Email;
+
+public record ListEmailsCommand(Paging Paging)
 {
     public record Result(IEnumerable<Email> Emails);
 

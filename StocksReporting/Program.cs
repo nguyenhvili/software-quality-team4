@@ -14,6 +14,14 @@ using StocksReporting.Infrastructure.Persistence.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost3000",
+        policy => policy.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -64,6 +72,8 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EfCoreRepository<>));
 
 
 var app = builder.Build();
+
+app.UseCors("AllowLocalhost3000");
 
 using (var scope = app.Services.CreateScope())
 {

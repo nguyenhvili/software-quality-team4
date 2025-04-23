@@ -7,18 +7,8 @@ import { Button } from "@headlessui/react";
 import DeleteEmailDialog from "../components/dialogs/DeleteEmailDialog";
 import Table from "../components/Table";
 import CreateEmailDialog from "../components/dialogs/CreateEmailDialog";
+import { useEmails } from "../hooks/useEmails";
 type EmailsPageProps = {};
-
-const emails = [
-  { id: 1, value: "example@gmail.com" },
-  { id: 2, value: "example@gmail.com" },
-  { id: 3, value: "example@gmail.com" },
-  { id: 4, value: "example@gmail.com" },
-  { id: 5, value: "example@gmail.com" },
-  { id: 6, value: "example@gmail.com" },
-  { id: 7, value: "example@gmail.com" },
-  { id: 8, value: "example@gmail.com" },
-];
 
 const EmailsPage: FC<EmailsPageProps> = (props) => {
   const {} = props;
@@ -28,7 +18,7 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
   );
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState<boolean>(false);
 
-  // const { data: emails } = useEmails();
+  const { data } = useEmails();
 
   const columnHelper = createColumnHelper<Email>();
 
@@ -37,7 +27,7 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
       columnHelper.accessor("id", {
         cell: ({ renderValue }) => <div>{renderValue()}</div>,
       }),
-      columnHelper.accessor("value", {
+      columnHelper.accessor("name", {
         cell: ({ renderValue }) => <div>{renderValue()}</div>,
       }),
       columnHelper.display({
@@ -59,7 +49,7 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
   return (
     <AppLayout title="Emails">
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 gap-8">
           <p className="text-gray-600">
             Here are all the emails you have stored — you can view, add, or
             manage them from this page.
@@ -71,7 +61,7 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
             Add new
           </Button>
         </div>
-        <Table cols={cols} data={emails} />
+        <Table cols={cols} data={data?.emails || []} />
       </div>
       {isOpenDeleteDialog && (
         <DeleteEmailDialog

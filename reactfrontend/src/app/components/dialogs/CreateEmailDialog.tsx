@@ -3,18 +3,23 @@ import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEmailCreate } from "../../hooks/useEmails";
 
 type CreateEmailDialogProps = {
   onClose: (value: boolean) => void;
 };
 
 const emailSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  name: z.string().email("Please enter a valid email address"),
 });
 
 type EmailFormData = z.infer<typeof emailSchema>;
 
-const CreateEmailDialog: FC<CreateEmailDialogProps> = ({ onClose }) => {
+const CreateEmailDialog: FC<CreateEmailDialogProps> = (props) => {
+  const { onClose } = props;
+
+  const { mutateAsync: createEmail } = useEmailCreate();
+
   const {
     register,
     handleSubmit,
@@ -24,8 +29,8 @@ const CreateEmailDialog: FC<CreateEmailDialogProps> = ({ onClose }) => {
   });
 
   const onSubmit = (data: EmailFormData) => {
-    //create email
-    console.log("Creating email:", data.email);
+    createEmail(data);
+    console.log("Creating email:", data.name);
     handleClose();
   };
 
@@ -54,13 +59,11 @@ const CreateEmailDialog: FC<CreateEmailDialogProps> = ({ onClose }) => {
             </label>
             <input
               id="email"
-              {...register("email")}
+              {...register("name")}
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-700 focus:ring-gray-700 focus:outline-none"
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.email.message}
-              </p>
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
             )}
 
             <div className="mt-6 flex justify-end gap-3">

@@ -1,15 +1,19 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { FC } from "react";
+import { useEmailDelete } from "../../hooks/useEmails";
 
 type DeleteEmailDialogProps = {
-  emailId: number | null;
+  emailId: number;
   onClose: (value: null) => void;
 };
 
 const DeleteEmailDialog: FC<DeleteEmailDialogProps> = (props) => {
   const { emailId, onClose } = props;
+
+  const { mutateAsync: deleteEmail } = useEmailDelete(emailId);
+
   const handleDelete = () => {
-    // delete email
+    deleteEmail();
     console.log(`Deleting email with ID: ${emailId}`);
     handleClose();
   };
@@ -17,8 +21,6 @@ const DeleteEmailDialog: FC<DeleteEmailDialogProps> = (props) => {
   const handleClose = () => {
     onClose(null);
   };
-
-  console.log("delete dialog");
 
   return (
     <Dialog

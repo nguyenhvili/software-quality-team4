@@ -3,15 +3,21 @@ import Navbar from "../components/Navbar";
 
 type AppLayoutProps = {
   children: ReactNode;
+  title: string;
 };
 
 const AppLayout: FC<AppLayoutProps> = (props) => {
-  const { children } = props;
+  const { children, title } = props;
 
   return (
-    <div className="w-full min-h-full h-screen grid grid-cols-[8rem_1fr] p-8">
+    <div className="min-h-screen flex bg-gray-100">
       <Navbar />
-      <section>{children}</section>
+      <main className="flex-1 p-8">
+        <h1 className="text-3xl font-semibold text-gray-800 mb-6">{title}</h1>
+        <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+          {children}
+        </div>
+      </main>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { IconDelete } from "../../assets/IconDelete";
 import { Button } from "@headlessui/react";
 import DeleteEmailDialog from "../components/dialogs/DeleteEmailDialog";
 import Table from "../components/Table";
+import CreateEmailDialog from "../components/dialogs/CreateEmailDialog";
 type EmailsPageProps = {};
 
 const emails = [
@@ -25,6 +26,7 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
   const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState<null | number>(
     null
   );
+  const [isOpenCreateDialog, setIsOpenCreateDialog] = useState<boolean>(false);
 
   // const { data: emails } = useEmails();
 
@@ -64,7 +66,7 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
           </p>
           <Button
             className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
-            onClick={() => alert("Add new email clicked")}
+            onClick={() => setIsOpenCreateDialog(true)}
           >
             Add new
           </Button>
@@ -76,6 +78,9 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
           emailId={isOpenDeleteDialog}
           onClose={setIsOpenDeleteDialog}
         />
+      )}
+      {isOpenCreateDialog && (
+        <CreateEmailDialog onClose={setIsOpenCreateDialog} />
       )}
     </AppLayout>
   );

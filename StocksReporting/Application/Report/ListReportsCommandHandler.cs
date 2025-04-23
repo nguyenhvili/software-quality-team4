@@ -7,7 +7,7 @@ public class ListReportsCommandHandler(IQueryObject<Domain.Report.Report> queryO
 {
     public async Task<ErrorOr<ListReportsCommand.Result>> Handle(ListReportsCommand command)
     {
-        var reports = await queryObject.OrderBy(r => r.CreatedAt, false).Page(command.Page, command.PageSize).ExecuteAsync();
+        var reports = await queryObject.OrderBy(r => r.CreatedAt, false).Page(command.Paging).ExecuteAsync();
         var result = reports.Select(r => new ListReportsCommand.Report(r.Id.Value, r.CreatedAt));
 
         return new ListReportsCommand.Result(result);

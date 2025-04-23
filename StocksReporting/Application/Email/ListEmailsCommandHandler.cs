@@ -14,7 +14,7 @@ public class ListEmailsCommandHandler
 
     public async Task<ErrorOr<ListEmailsCommand.Result>> Handle(ListEmailsCommand command)
     {
-        var emails = await _queryObject.OrderBy(email => email.EmailValue.Value).Page(command.Page, command.PageSize).ExecuteAsync();
+        var emails = await _queryObject.OrderBy(email => email.EmailValue.Value).Page(command.Paging).ExecuteAsync();
 
         var result = emails.Select(email => new ListEmailsCommand.Email(email.Id.Value, email.EmailValue.Value));
 

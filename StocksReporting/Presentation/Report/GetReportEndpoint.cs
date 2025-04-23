@@ -8,7 +8,7 @@ namespace StocksReporting.Presentation.Report;
 public class GetReportEndpoint
 {
     [WolverineGet("reports/{id}")]
-    public static async Task<IResult> ListReportsAsync(Guid id, IMessageBus sender)
+    public static async Task<IResult> GetReportAsync(Guid id, IMessageBus sender)
     {
         var command = new GetReportCommand(id);
 
@@ -53,5 +53,4 @@ public class GetReportEndpoint
             decimal Weight
         );
     }
-
 }

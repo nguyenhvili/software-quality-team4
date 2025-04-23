@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using StocksReporting.Application.Common;
 
 namespace StocksReporting.Application.Services;
 
@@ -13,9 +14,9 @@ public abstract class QueryObject<TAggregate> : IQueryObject<TAggregate> where T
         return this;
     }
 
-    public IQueryObject<TAggregate> Page(int page, int pageSize)
+    public IQueryObject<TAggregate> Page(Paging paging)
     {
-        _query = _query.Skip((page - 1) * pageSize).Take(pageSize);
+        _query = _query.Skip(paging.Skip()).Take(paging.Take());
         return this;
     }
 

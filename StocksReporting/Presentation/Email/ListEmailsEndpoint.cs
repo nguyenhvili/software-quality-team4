@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using StocksReporting.Application.Common;
 using StocksReporting.Application.Email;
 using Wolverine;
 using Wolverine.Http;
@@ -10,7 +11,13 @@ public class ListEmailsEndpoint
     [WolverineGet("emails")]
     public static async Task<IResult> ListEmailsAsync(int page, int pageSize, IMessageBus sender)
     {
-        var command = new ListEmailsCommand(page, pageSize);
+        var pagingResult = Paging.Create(page, pageSize);
+        if (pagingResult.IsError)
+        {
+            return Results.BadRequest(pagingResult.Errors.Select(e => e.Code));
+        }
+        
+        var command = new ListEmailsCommand(pagingResult.Value);
 
         var result = await sender.InvokeAsync<ErrorOr<ListEmailsCommand.Result>>(command);
 

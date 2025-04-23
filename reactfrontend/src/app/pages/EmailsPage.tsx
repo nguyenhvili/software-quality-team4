@@ -1,28 +1,82 @@
-import { FC } from "react";
+import { FC, useMemo, useState } from "react";
 import AppLayout from "../layouts/AppLayout";
-import { useEmails } from "../hooks/useEmails";
-
+import { createColumnHelper } from "@tanstack/react-table";
+import { Email } from "../types/email";
+import { IconDelete } from "../../assets/IconDelete";
+import { Button } from "@headlessui/react";
+import DeleteEmailDialog from "../components/dialogs/DeleteEmailDialog";
+import Table from "../components/Table";
 type EmailsPageProps = {};
+
+const emails = [
+  { id: 1, value: "example@gmail.com" },
+  { id: 2, value: "example@gmail.com" },
+  { id: 3, value: "example@gmail.com" },
+  { id: 4, value: "example@gmail.com" },
+  { id: 5, value: "example@gmail.com" },
+  { id: 6, value: "example@gmail.com" },
+  { id: 7, value: "example@gmail.com" },
+  { id: 8, value: "example@gmail.com" },
+];
 
 const EmailsPage: FC<EmailsPageProps> = (props) => {
   const {} = props;
 
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState<null | number>(
+    null
+  );
+
   // const { data: emails } = useEmails();
 
-  const emails = [
-    "example@gmail.com",
-    "example@gmail.com",
-    "example@gmail.com",
-    "example@gmail.com",
-    "example@gmail.com",
-    "example@gmail.com",
-    "example@gmail.com",
-    "example@gmail.com",
-  ];
+  const columnHelper = createColumnHelper<Email>();
+
+  const cols = useMemo(
+    () => [
+      columnHelper.accessor("id", {
+        cell: ({ renderValue }) => <div>{renderValue()}</div>,
+      }),
+      columnHelper.accessor("value", {
+        cell: ({ renderValue }) => <div>{renderValue()}</div>,
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <button
+            className="p-1 rounded bg-red-500 transition"
+            onClick={() => setIsOpenDeleteDialog(row.original.id)}
+          >
+            <IconDelete className="w-5 h-5 text-white" />
+          </button>
+        ),
+      }),
+    ],
+    [setIsOpenDeleteDialog]
+  );
 
   return (
-    <AppLayout>
-      <div>emails page</div>
+    <AppLayout title="Emails">
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-gray-600">
+            Here are all the emails you have stored — you can view, add, or
+            manage them from this page.
+          </p>
+          <Button
+            className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
+            onClick={() => alert("Add new email clicked")}
+          >
+            Add new
+          </Button>
+        </div>
+        <Table cols={cols} data={emails} />
+      </div>
+      {isOpenDeleteDialog && (
+        <DeleteEmailDialog
+          emailId={isOpenDeleteDialog}
+          onClose={setIsOpenDeleteDialog}
+        />
+      )}
     </AppLayout>
   );
 };

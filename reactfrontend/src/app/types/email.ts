@@ -1,6 +1,8 @@
 export type Email = {
   id: number;
-  name: string;
+  emailValue: string;
 };
 
-export type EmailCreate = Omit<Email, "id">;
+export type EmailCreate = {
+  name: string;
+};

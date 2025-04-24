@@ -24,10 +24,10 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
 
   const cols = useMemo(
     () => [
-      columnHelper.accessor("id", {
-        cell: ({ renderValue }) => <div>{renderValue()}</div>,
-      }),
-      columnHelper.accessor("name", {
+      // columnHelper.accessor("id", {
+      //   cell: ({ renderValue }) => <div>{renderValue()}</div>,
+      // }),
+      columnHelper.accessor("emailValue", {
         cell: ({ renderValue }) => <div>{renderValue()}</div>,
       }),
       columnHelper.display({

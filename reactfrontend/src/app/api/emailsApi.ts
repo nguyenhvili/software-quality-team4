@@ -16,7 +16,9 @@ async function deleteEmail(id: number) {
 }
 
 async function getAll() {
-  const resp = await axiosInstance.get<{ emails: Email[] }>("emails");
+  const resp = await axiosInstance.get<{ emails: Email[] }>("emails", {
+    params: { page: 1, pageSize: 20 }, // TODO: loading other pages
+  });
   return resp.data;
 }
 

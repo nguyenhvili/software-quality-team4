@@ -5,13 +5,13 @@ import { Email } from "../types/email";
 import { IconDelete } from "../../assets/IconDelete";
 import { Button } from "@headlessui/react";
 import DeleteEmailDialog from "../components/dialogs/DeleteEmailDialog";
-import Table from "../components/Table";
+import Table from "../components/tables/EmailTable";
 import CreateEmailDialog from "../components/dialogs/CreateEmailDialog";
 import { useEmails } from "../hooks/useEmails";
 type EmailsPageProps = {};
 
 const EmailsPage: FC<EmailsPageProps> = (props) => {
-  const {} = props;
+  const { } = props;
 
   const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState<null | number>(
     null

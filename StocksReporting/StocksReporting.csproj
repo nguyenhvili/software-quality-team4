@@ -27,9 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Report\" />
     <Folder Include="Domain\Report\ValueObjects\" />
-    <Folder Include="Presentation\Report\" />
   </ItemGroup>
 
 </Project>

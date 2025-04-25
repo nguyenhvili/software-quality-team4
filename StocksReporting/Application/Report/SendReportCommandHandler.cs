@@ -14,7 +14,7 @@ public class SendReportHandler
 
     public async Task<ErrorOr<SendReportEndpoint.Response.SentReport>> Handle(SendReportCommand command)
     {
-        var result = await _reportEmailService.SendReportAsync(command.FilePath, command.EmailIds);
+        var result = await _reportEmailService.SendReportAsync(command.ReportId, command.EmailIds);
 
         if (result.IsError)
             return result.Errors;
@@ -22,7 +22,7 @@ public class SendReportHandler
         var value = result.Value;
 
         return new SendReportEndpoint.Response.SentReport(
-            value.FilePath,
+            value.ReportId,
             value.SentTo
         );
     }

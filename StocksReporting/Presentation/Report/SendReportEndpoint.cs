@@ -14,7 +14,7 @@ public class SendReportEndpoint
         [FromServices] IMessageBus bus)
     {
         var result = await bus.InvokeAsync<ErrorOr<Response.SentReport>>(
-            new SendReportCommand(request.FilePath, request.EmailIds)
+            new SendReportCommand(request.ReportId, request.EmailIds)
         );
 
         return result.Match(
@@ -23,10 +23,10 @@ public class SendReportEndpoint
         );
     }
 
-    public record Request(string FilePath, List<Guid> EmailIds);
+    public record Request(Guid ReportId, List<Guid> EmailIds);
 
     public record Response(Response.SentReport Report)
     {
-        public record SentReport(string FilePath, List<string> SentTo);
+        public record SentReport(Guid ReportId, List<string> SentTo);
     }
 }

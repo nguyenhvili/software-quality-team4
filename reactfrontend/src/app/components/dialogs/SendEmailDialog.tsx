@@ -1,24 +1,24 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { FC, useCallback, useMemo, useState } from "react";
-import { ReportSend } from "src/app/types/report";
+import { ReportAll, ReportSend } from "src/app/types/report";
 import { useEmails } from "../../hooks/useEmails";
-import { useReportSend, useReport } from "../../hooks/useReports";
+import { useReportSend } from "../../hooks/useReports";
 import { Email } from "src/app/types/email";
 import Table from "../Table";
 import { formatDate } from "../../utils/formatDate";
 import CustomButton from "../CustomButton";
+import toast from "react-hot-toast";
 
 type SendEmailDialogProps = {
-  reportId: string;
+  report: ReportAll;
   onClose: (value: null) => void;
 };
 
 const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
-  const { reportId, onClose } = props;
+  const { report, onClose } = props;
 
-  const { data: report } = useReport(reportId);
-  const { data: emails } = useEmails();
+  const { data: emails, isLoading } = useEmails();
 
   const [checkedEmails, setCheckedEmails] = useState<Set<string>>(new Set());
   const { mutateAsync: sendEmail } = useReportSend();
@@ -29,10 +29,11 @@ const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
 
   const handleSend = () => {
     const reportSend: ReportSend = {
-      filePath: report?.filePath ?? "",
+      reportId: report.id,
       emailIds: Array.from(checkedEmails),
     };
     sendEmail(reportSend);
+    toast.success("Emails were sent.");
     handleClose();
   };
 
@@ -96,6 +97,7 @@ const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
             cols={cols}
             data={emails?.emails || []}
             noContentMessage="No emails found."
+            isLoading={isLoading}
           />
           <div className="mt-6 flex justify-end gap-3">
             <CustomButton variant="secondary" onClick={handleClose}>

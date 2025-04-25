@@ -9,10 +9,11 @@ type TableProps<T> = {
   cols: ColumnDef<T, any>[];
   data: T[];
   noContentMessage?: string;
+  isLoading?: boolean;
 };
 
 function Table<T>(props: TableProps<T>) {
-  const { cols, data, noContentMessage } = props;
+  const { cols, data, noContentMessage, isLoading } = props;
 
   const table = useReactTable({
     columns: cols,
@@ -43,7 +44,7 @@ function Table<T>(props: TableProps<T>) {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.length ? (
+          {table.getRowModel().rows.length !== 0 &&
             table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
@@ -55,8 +56,18 @@ function Table<T>(props: TableProps<T>) {
                   </td>
                 ))}
               </tr>
-            ))
-          ) : (
+            ))}
+          {table.getRowModel().rows.length === 0 && isLoading && (
+            <tr>
+              <td
+                colSpan={cols.length}
+                className="text-center py-6 text-gray-500"
+              >
+                {noContentMessage}
+              </td>
+            </tr>
+          )}
+          {table.getRowModel().rows.length === 0 && !isLoading && (
             <tr>
               <td
                 colSpan={cols.length}

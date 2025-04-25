@@ -78,4 +78,6 @@ packages/
 # Generated Reports (.csv files)
 /StocksReporting/GeneratedReports/*
 
-node_modules
+/StocksReporting/database.db
+/StocksReporting/database.db-shm
+/StocksReporting/database.db-wal

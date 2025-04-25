@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import ReportsApi from "../api/reportsApi";
 import { ReportSend } from "../types/report";
@@ -31,7 +30,7 @@ export const useReportSend = () => {
       queryClient.invalidateQueries({ queryKey: reportsQueryKey });
     },
     onError: (err: AxiosError) => {
-      toast.error(err.message);
+      alert(err.message);
     },
   });
 };

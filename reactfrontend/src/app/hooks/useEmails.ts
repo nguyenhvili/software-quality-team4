@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import EmailsApi from "../api/emailsApi";
 import { EmailCreate } from "../types/email";
@@ -24,7 +23,7 @@ export const useEmailCreate = () => {
       queryClient.invalidateQueries({ queryKey: emailsQueryKey });
     },
     onError: (err: AxiosError) => {
-      toast.error(err.message);
+      alert(err.message);
     },
   });
 };
@@ -40,7 +39,7 @@ export const useEmailDelete = (id: number) => {
       queryClient.invalidateQueries({ queryKey: emailsQueryKey });
     },
     onError: (err: AxiosError) => {
-      toast.error(err.message);
+      alert(err.message);
     },
   });
 };

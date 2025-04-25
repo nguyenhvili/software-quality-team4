@@ -1,3 +1,3 @@
 namespace StocksReporting.Application.Report;
 
-public record SendReportCommand(string FilePath, List<Guid> EmailIds);
+public record SendReportCommand(Guid ReportId, List<Guid> EmailIds);

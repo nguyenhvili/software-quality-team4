@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Spinner from "./Spinner";
 
 type TableProps<T> = {
   cols: ColumnDef<T, any>[];
@@ -59,11 +60,11 @@ function Table<T>(props: TableProps<T>) {
             ))}
           {table.getRowModel().rows.length === 0 && isLoading && (
             <tr>
-              <td
-                colSpan={cols.length}
-                className="text-center py-6 text-gray-500"
-              >
-                {noContentMessage}
+              <td colSpan={cols.length} className="justify-center py-6">
+                <Spinner
+                  size={32}
+                  colorClass="border-gray-500 justify-self-center"
+                />
               </td>
             </tr>
           )}

@@ -28,7 +28,7 @@ export const useEmailCreate = () => {
   });
 };
 
-export const useEmailDelete = (id: number) => {
+export const useEmailDelete = (id: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({

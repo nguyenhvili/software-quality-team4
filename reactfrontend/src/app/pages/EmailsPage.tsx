@@ -5,15 +5,15 @@ import { Email } from "../types/email";
 import { IconDelete } from "../../assets/IconDelete";
 import { Button } from "@headlessui/react";
 import DeleteEmailDialog from "../components/dialogs/DeleteEmailDialog";
-import Table from "../components/tables/EmailTable";
 import CreateEmailDialog from "../components/dialogs/CreateEmailDialog";
 import { useEmails } from "../hooks/useEmails";
+import Table from "../components/Table";
 type EmailsPageProps = {};
 
 const EmailsPage: FC<EmailsPageProps> = (props) => {
-  const { } = props;
+  const {} = props;
 
-  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState<null | number>(
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState<null | string>(
     null
   );
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState<boolean>(false);
@@ -24,9 +24,6 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
 
   const cols = useMemo(
     () => [
-      // columnHelper.accessor("id", {
-      //   cell: ({ renderValue }) => <div>{renderValue()}</div>,
-      // }),
       columnHelper.accessor("emailValue", {
         cell: ({ renderValue }) => <div>{renderValue()}</div>,
       }),
@@ -61,7 +58,11 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
             Add new
           </Button>
         </div>
-        <Table cols={cols} data={data?.emails || []} />
+        <Table
+          cols={cols}
+          data={data?.emails || []}
+          noContentMessage="No emails found."
+        />
       </div>
       {isOpenDeleteDialog && (
         <DeleteEmailDialog

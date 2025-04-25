@@ -10,7 +10,7 @@ async function create(payload: EmailCreate) {
   return resp.data;
 }
 
-async function deleteEmail(id: number) {
+async function deleteEmail(id: string) {
   const resp = await axiosInstance.delete<{}>(`emails/${id}`);
   return resp.data;
 }

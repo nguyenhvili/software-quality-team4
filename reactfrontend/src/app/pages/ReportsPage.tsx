@@ -5,17 +5,17 @@ import { IconDetail } from "../../assets/IconDetail";
 import { IconEmail } from "../../assets/IconEmail";
 import { useReports } from "../hooks/useReports";
 import ReportDetailDialog from "../components/dialogs/ReportDetailDialog";
-import ReportTable from "../components/tables/ReportTable";
 import { ReportAll } from "../types/report";
 import SendEmailDialog from "../components/dialogs/SendEmailDialog";
+import Table from "../components/Table";
 
 type ReportsPageProps = {};
 
 const ReportsPage: FC<ReportsPageProps> = (props) => {
-
-  const [activeReport, setActiveReport] = useState<ReportAll | null>(null);
-  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<boolean>(false);
-  const [isSendDialogOpen, setIsSendDialogOpen] = useState<boolean>(false);
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<string | null>(
+    null
+  );
+  const [isSendDialogOpen, setIsSendDialogOpen] = useState<string | null>(null);
 
   const { data } = useReports();
 
@@ -27,13 +27,10 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
         header: "Created at",
         cell: ({ getValue }) => {
           const raw = getValue();
-          const safeString = raw.includes(".")
-            ? raw.split(".")[0] + "Z"
-            : raw;
+          const safeString = raw.includes(".") ? raw.split(".")[0] + "Z" : raw;
           const date = new Date(safeString);
           return <div>{date.toLocaleString("en-US")}</div>;
-        }
-
+        },
       }),
       columnHelper.display({
         id: "actions",
@@ -42,22 +39,14 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
           <div className="flex gap-2">
             <button
               className="p-1 rounded bg-blue-500 transition hover:bg-blue-600"
-              onClick={() => {
-                setActiveReport(row.original);
-                setIsDetailDialogOpen(true);
-                setIsSendDialogOpen(false);
-              }}
+              onClick={() => setIsDetailDialogOpen(row.original.id)}
               title="View details"
             >
               <IconDetail className="w-5 h-5 text-white" />
             </button>
             <button
               className="p-1 rounded bg-gray-500 transition hover:bg-gray-600"
-              onClick={() => {
-                setActiveReport(row.original);
-                setIsSendDialogOpen(true);
-                setIsDetailDialogOpen(false);
-              }}
+              onClick={() => setIsSendDialogOpen(row.original.id)}
               title="Send by email"
             >
               <IconEmail className="w-5 h-5 text-white" />
@@ -65,32 +54,31 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
           </div>
         ),
       }),
-
     ],
-    [setActiveReport, setIsDetailDialogOpen]
+    [setIsDetailDialogOpen, setIsSendDialogOpen]
   );
-
 
   return (
     <AppLayout title="Reports">
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4 gap-8">
           <p className="text-gray-600">
-            Here are all generated reports — you can select a report and send an email.
+            Here are all generated reports — you can select a report and send an
+            email.
           </p>
         </div>
-        <ReportTable cols={cols} data={data?.reports || []} />
+        <Table cols={cols} data={data?.reports || []} />
       </div>
-      {isDetailDialogOpen && activeReport && (
+      {isDetailDialogOpen && (
         <ReportDetailDialog
-          reportId={activeReport.id}
-          onClose={setActiveReport}
+          reportId={isDetailDialogOpen}
+          onClose={setIsDetailDialogOpen}
         />
       )}
-      {isSendDialogOpen && activeReport && (
+      {isSendDialogOpen && (
         <SendEmailDialog
-          reportId={activeReport.id}
-          onClose={setActiveReport}
+          reportId={isSendDialogOpen}
+          onClose={setIsSendDialogOpen}
         />
       )}
     </AppLayout>

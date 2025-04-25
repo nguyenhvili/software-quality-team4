@@ -1,5 +1,5 @@
 export type Email = {
-  id: number;
+  id: string;
   emailValue: string;
 };
 

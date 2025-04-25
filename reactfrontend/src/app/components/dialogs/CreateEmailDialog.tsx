@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEmailCreate } from "../../hooks/useEmails";
+import CustomButton from "../CustomButton";
 
 type CreateEmailDialogProps = {
   onClose: (value: boolean) => void;
@@ -30,7 +31,6 @@ const CreateEmailDialog: FC<CreateEmailDialogProps> = (props) => {
 
   const onSubmit = (data: EmailFormData) => {
     createEmail(data);
-    console.log("Creating email:", data.name);
     handleClose();
   };
 
@@ -67,19 +67,12 @@ const CreateEmailDialog: FC<CreateEmailDialogProps> = (props) => {
             )}
 
             <div className="mt-6 flex justify-end gap-3">
-              <Button
-                type="button"
-                onClick={handleClose}
-                className="rounded-md px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
-              >
+              <CustomButton variant="secondary" onClick={handleClose}>
                 Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="rounded-md bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
+              </CustomButton>
+              <CustomButton variant="primary" type={"submit"}>
                 Create
-              </Button>
+              </CustomButton>
             </div>
           </form>
         </DialogPanel>

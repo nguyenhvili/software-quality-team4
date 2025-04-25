@@ -4,16 +4,15 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { FC } from "react";
-import { ReportAll } from "src/app/types/report"
 
-type ReportTableProps = {
-  cols: ColumnDef<ReportAll, any>[];
-  data: ReportAll[];
+type TableProps<T> = {
+  cols: ColumnDef<T, any>[];
+  data: T[];
+  noContentMessage?: string;
 };
 
-const ReportTable: FC<ReportTableProps> = (props) => {
-  const { cols, data } = props;
+function Table<T>(props: TableProps<T>) {
+  const { cols, data, noContentMessage } = props;
 
   const table = useReactTable({
     columns: cols,
@@ -35,9 +34,9 @@ const ReportTable: FC<ReportTableProps> = (props) => {
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                 </th>
               ))}
             </tr>
@@ -63,7 +62,7 @@ const ReportTable: FC<ReportTableProps> = (props) => {
                 colSpan={cols.length}
                 className="text-center py-6 text-gray-500"
               >
-                No reports found.
+                {noContentMessage}
               </td>
             </tr>
           )}
@@ -71,6 +70,6 @@ const ReportTable: FC<ReportTableProps> = (props) => {
       </table>
     </div>
   );
-};
+}
 
-export default ReportTable;
+export default Table;

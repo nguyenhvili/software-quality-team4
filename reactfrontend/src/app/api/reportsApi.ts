@@ -18,15 +18,14 @@ async function getAll() {
 }
 
 async function getReport(id: string) {
-  const resp = await axiosInstance.get<{ report: ReportType }>("reports/" + id, {
-  });
+  const resp = await axiosInstance.get<ReportType>("reports/" + id);
   return resp.data;
 }
 
 const ReportsApi = {
   getAll,
   send,
-  getReport
+  getReport,
 };
 
 export default ReportsApi;

@@ -1,15 +1,16 @@
 export type ReportType = {
   id: string;
   filePath: string;
-  createdAt: string
+  createdAt: string;
+  // add rest
 };
 
 export type ReportAll = {
   id: string;
-  createdAt: string
+  createdAt: string;
 };
 
 export type ReportSend = {
   filePath: string;
-  emails: string[]
+  emailIds: string[];
 };

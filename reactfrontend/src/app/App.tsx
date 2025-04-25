@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { AppContextWrapper } from "./AppContextWrapper";
 import EmailsPage from "./pages/EmailsPage";
 import ReportsPage from "./pages/ReportsPage";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/emails" element={<EmailsPage />} />
         <Route path="/reports" element={<ReportsPage />} />
       </Routes>
+      <Toaster position="top-right" />
     </AppContextWrapper>
   );
 }

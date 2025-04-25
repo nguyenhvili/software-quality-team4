@@ -1,9 +1,11 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { FC } from "react";
 import { useEmailDelete } from "../../hooks/useEmails";
+import CustomButton from "../CustomButton";
+import toast from "react-hot-toast";
 
 type DeleteEmailDialogProps = {
-  emailId: number;
+  emailId: string;
   onClose: (value: null) => void;
 };
 
@@ -14,7 +16,7 @@ const DeleteEmailDialog: FC<DeleteEmailDialogProps> = (props) => {
 
   const handleDelete = () => {
     deleteEmail();
-    console.log(`Deleting email with ID: ${emailId}`);
+    toast.error("Deleted");
     handleClose();
   };
 
@@ -43,18 +45,13 @@ const DeleteEmailDialog: FC<DeleteEmailDialogProps> = (props) => {
             undone.
           </p>
           <div className="mt-6 flex justify-end gap-3">
-            <Button
-              className="rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400"
-              onClick={handleClose}
-            >
+            <CustomButton variant="secondary" onClick={handleClose}>
               Cancel
-            </Button>
-            <Button
-              className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-              onClick={handleDelete}
-            >
+            </CustomButton>
+
+            <CustomButton variant="danger" onClick={handleDelete}>
               Delete
-            </Button>
+            </CustomButton>
           </div>
         </DialogPanel>
       </div>

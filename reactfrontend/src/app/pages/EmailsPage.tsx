@@ -18,7 +18,7 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
   );
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState<boolean>(false);
 
-  const { data } = useEmails();
+  const { data, isLoading } = useEmails();
 
   const columnHelper = createColumnHelper<Email>();
 
@@ -62,6 +62,7 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
           cols={cols}
           data={data?.emails || []}
           noContentMessage="No emails found."
+          isLoading={isLoading}
         />
       </div>
       {isOpenDeleteDialog && (

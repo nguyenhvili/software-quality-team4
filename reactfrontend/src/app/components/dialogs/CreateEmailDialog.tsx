@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEmailCreate } from "../../hooks/useEmails";
 import CustomButton from "../CustomButton";
+import toast from "react-hot-toast";
 
 type CreateEmailDialogProps = {
   onClose: (value: boolean) => void;
@@ -31,6 +32,7 @@ const CreateEmailDialog: FC<CreateEmailDialogProps> = (props) => {
 
   const onSubmit = (data: EmailFormData) => {
     createEmail(data);
+    toast.success("Email was created.");
     handleClose();
   };
 

@@ -15,9 +15,11 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<string | null>(
     null
   );
-  const [isSendDialogOpen, setIsSendDialogOpen] = useState<string | null>(null);
+  const [isSendDialogOpen, setIsSendDialogOpen] = useState<ReportAll | null>(
+    null
+  );
 
-  const { data } = useReports();
+  const { data, isLoading } = useReports();
 
   const columnHelper = createColumnHelper<ReportAll>();
 
@@ -46,7 +48,7 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
             </button>
             <button
               className="p-1 rounded bg-gray-500 transition hover:bg-gray-600"
-              onClick={() => setIsSendDialogOpen(row.original.id)}
+              onClick={() => setIsSendDialogOpen(row.original)}
               title="Send by email"
             >
               <IconEmail className="w-5 h-5 text-white" />
@@ -67,7 +69,12 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
             email.
           </p>
         </div>
-        <Table cols={cols} data={data?.reports || []} />
+        <Table
+          cols={cols}
+          data={data?.reports || []}
+          noContentMessage="No reports found."
+          isLoading={isLoading}
+        />
       </div>
       {isDetailDialogOpen && (
         <ReportDetailDialog
@@ -77,7 +84,7 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
       )}
       {isSendDialogOpen && (
         <SendEmailDialog
-          reportId={isSendDialogOpen}
+          report={isSendDialogOpen}
           onClose={setIsSendDialogOpen}
         />
       )}

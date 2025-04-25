@@ -16,7 +16,7 @@ const DeleteEmailDialog: FC<DeleteEmailDialogProps> = (props) => {
 
   const handleDelete = () => {
     deleteEmail();
-    toast.error("Deleted");
+    toast.error("Email was deleted.");
     handleClose();
   };
 

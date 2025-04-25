@@ -11,6 +11,6 @@ export type ReportAll = {
 };
 
 export type ReportSend = {
-  filePath: string;
+  reportId: string;
   emailIds: string[];
 };

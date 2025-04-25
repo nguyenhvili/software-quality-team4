@@ -6,20 +6,20 @@ import { IconEmail } from "../../assets/IconEmail";
 import { useReports } from "../hooks/useReports";
 import ReportDetailDialog from "../components/dialogs/ReportDetailDialog";
 import ReportTable from "../components/tables/ReportTable";
-import { ReportType } from "../types/report";
+import { ReportAll } from "../types/report";
 import SendEmailDialog from "../components/dialogs/SendEmailDialog";
 
 type ReportsPageProps = {};
 
 const ReportsPage: FC<ReportsPageProps> = (props) => {
 
-  const [activeReport, setActiveReport] = useState<ReportType | null>(null);
+  const [activeReport, setActiveReport] = useState<ReportAll | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<boolean>(false);
   const [isSendDialogOpen, setIsSendDialogOpen] = useState<boolean>(false);
 
   const { data } = useReports();
 
-  const columnHelper = createColumnHelper<ReportType>();
+  const columnHelper = createColumnHelper<ReportAll>();
 
   const cols = useMemo(
     () => [
@@ -83,13 +83,13 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
       </div>
       {isDetailDialogOpen && activeReport && (
         <ReportDetailDialog
-          report={activeReport}
+          reportId={activeReport.id}
           onClose={setActiveReport}
         />
       )}
       {isSendDialogOpen && activeReport && (
         <SendEmailDialog
-          report={activeReport}
+          reportId={activeReport.id}
           onClose={setActiveReport}
         />
       )}

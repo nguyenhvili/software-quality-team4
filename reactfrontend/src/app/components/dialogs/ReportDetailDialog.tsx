@@ -1,26 +1,29 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { FC } from "react";
-import { ReportType } from "src/app/types/report";
+import { useReport } from "../../hooks/useReports";
 
 type ReportDetailDialogProps = {
-    report: ReportType;
+    reportId: string;
     onClose: (value: null) => void;
 };
 
 const ReportDetailDialog: FC<ReportDetailDialogProps> = (props) => {
-    const { report, onClose } = props;
+    const { reportId, onClose } = props;
+
+    const { data: report } = useReport(reportId);
 
     const handleClose = () => {
         onClose(null);
     };
 
     const formatDate = () => {
-        const value = report.createdAt;
-        const safeString = value.includes(".")
-            ? value.split(".")[0] + "Z"
-            : value;
-        const date = new Date(safeString);
-        return date.toLocaleString("en-US")
+        const value = report?.report?.createdAt ?? "";
+        return value;
+        // const safeString = value.includes(".")
+        //     ? value.split(".")[0] + "Z"
+        //     : value;
+        // const date = new Date(safeString);
+        // return date.toLocaleString("en-US")
     };
 
     return (

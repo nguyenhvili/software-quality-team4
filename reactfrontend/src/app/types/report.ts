@@ -4,6 +4,10 @@ export type ReportType = {
   createdAt: string
 };
 
+export type ReportAll = {
+  id: string;
+  createdAt: string
+};
 
 export type ReportSend = {
   filePath: string;

@@ -4,16 +4,18 @@ import { FC, useMemo, useState } from "react";
 import { ReportSend, ReportType } from "src/app/types/report";
 import SendEmailTable from "../tables/SendEmailTable";
 import { useEmails } from "../../hooks/useEmails";
-import { useReportSend } from "../../hooks/useReports";
+import { useReportSend, useReport } from "../../hooks/useReports";
 
 
 type SendEmailDialogProps = {
-    report: ReportType;
+    reportId: string;
     onClose: (value: null) => void;
 };
 
 const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
-    const { report, onClose } = props;
+    const { reportId, onClose } = props;
+
+    const { data: report } = useReport(reportId);
 
     const [checkedEmails, setCheckedEmails] = useState<Set<string>>(new Set());
     const { mutateAsync: sendEmail } = useReportSend();
@@ -27,7 +29,7 @@ const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
 
     const handleSend = () => {
         const reportSend: ReportSend = {
-            filePath: report.filePath,
+            filePath: report?.report?.filePath ?? "",
             emails: Array.from(checkedEmails)
         };
         sendEmail(reportSend);
@@ -35,12 +37,13 @@ const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
     };
 
     const formatDate = () => {
-        const value = report.createdAt;
-        const safeString = value.includes(".")
-            ? value.split(".")[0] + "Z"
-            : value;
-        const date = new Date(safeString);
-        return date.toLocaleString("en-US")
+        const value = report?.report?.createdAt ?? "";
+        return value;
+        // const safeString = value.includes(".")
+        //     ? value.split(".")[0] + "Z"
+        //     : value;
+        // const date = new Date(safeString);
+        // return date.toLocaleString("en-US")
     };
 
     const checkEmail = (email: string) => {

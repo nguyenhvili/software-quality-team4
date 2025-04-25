@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ReportSend, ReportType } from "../types/report";
+import { ReportAll, ReportSend, ReportType } from "../types/report";
 
 const axiosInstance = axios.create({
   baseURL: `http://localhost:5025/`, //add BE url
@@ -11,7 +11,7 @@ async function send(payload: ReportSend) {
 }
 
 async function getAll() {
-  const resp = await axiosInstance.get<{ reports: ReportType[] }>("reports", {
+  const resp = await axiosInstance.get<{ reports: ReportAll[] }>("reports", {
     params: { page: 1, pageSize: 20 },
   });
   return resp.data;

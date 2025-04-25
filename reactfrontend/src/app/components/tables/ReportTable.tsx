@@ -5,11 +5,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { FC } from "react";
-import { ReportType } from "src/app/types/report"
+import { ReportAll } from "src/app/types/report"
 
 type ReportTableProps = {
-  cols: ColumnDef<ReportType, any>[];
-  data: ReportType[];
+  cols: ColumnDef<ReportAll, any>[];
+  data: ReportAll[];
 };
 
 const ReportTable: FC<ReportTableProps> = (props) => {

@@ -33,7 +33,6 @@ const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
       emailIds: Array.from(checkedEmails),
     };
     sendEmail(reportSend);
-    toast.success("Emails were sent.");
     handleClose();
   };
 

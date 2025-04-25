@@ -8,14 +8,9 @@ import DeleteEmailDialog from "../components/dialogs/DeleteEmailDialog";
 import CreateEmailDialog from "../components/dialogs/CreateEmailDialog";
 import { useEmails } from "../hooks/useEmails";
 import Table from "../components/Table";
-type EmailsPageProps = {};
 
-const EmailsPage: FC<EmailsPageProps> = (props) => {
-  const {} = props;
-
-  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = useState<null | string>(
-    null
-  );
+const EmailsPage: FC = () => {
+  const [emailIdToDelete, setEmailIdToDelete] = useState<null | string>(null);
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState<boolean>(false);
 
   const { data, isLoading } = useEmails();
@@ -33,14 +28,14 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
         cell: ({ row }) => (
           <button
             className="p-1 rounded bg-red-500 transition"
-            onClick={() => setIsOpenDeleteDialog(row.original.id)}
+            onClick={() => setEmailIdToDelete(row.original.id)}
           >
             <IconDelete className="w-5 h-5 text-white" />
           </button>
         ),
       }),
     ],
-    [setIsOpenDeleteDialog]
+    [setEmailIdToDelete]
   );
 
   return (
@@ -65,10 +60,10 @@ const EmailsPage: FC<EmailsPageProps> = (props) => {
           isLoading={isLoading}
         />
       </div>
-      {isOpenDeleteDialog && (
+      {emailIdToDelete && (
         <DeleteEmailDialog
-          emailId={isOpenDeleteDialog}
-          onClose={setIsOpenDeleteDialog}
+          emailId={emailIdToDelete}
+          onClose={setEmailIdToDelete}
         />
       )}
       {isOpenCreateDialog && (

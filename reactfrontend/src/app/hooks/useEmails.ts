@@ -22,6 +22,7 @@ export const useEmailCreate = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: emailsQueryKey });
+      toast.error("Email was created.");
     },
     onError: (err: AxiosError) => {
       toast.error(err.message);
@@ -38,6 +39,7 @@ export const useEmailDelete = (id: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: emailsQueryKey });
+      toast.error("Email was deleted.");
     },
     onError: (err: AxiosError) => {
       toast.error(err.message);

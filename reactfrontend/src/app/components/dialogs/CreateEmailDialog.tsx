@@ -32,7 +32,6 @@ const CreateEmailDialog: FC<CreateEmailDialogProps> = (props) => {
 
   const onSubmit = (data: EmailFormData) => {
     createEmail(data);
-    toast.success("Email was created.");
     handleClose();
   };
 

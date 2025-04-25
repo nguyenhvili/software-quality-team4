@@ -28,7 +28,7 @@ export const useReportSend = () => {
     mutationFn: async (payload: ReportSend) => {
       return ReportsApi.send(payload);
     },
-    onSuccess: () => toast.error("Emails were sent."),
+    onSuccess: () => toast.success("Emails were sent."),
     onError: (err: AxiosError) => {
       toast.error(err.message);
     },

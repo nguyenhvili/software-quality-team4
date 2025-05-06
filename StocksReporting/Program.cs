@@ -11,6 +11,7 @@ using StocksReporting.Application.Services;
 using StocksReporting.Application.Services.Scheduling;
 using StocksReporting.Infrastructure.Email;
 using StocksReporting.Infrastructure.Persistence.Services;
+using StocksReporting.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton(builder.Configuration);
+builder.Services.AddOptions<EmailSettings>()
+                .BindConfiguration(EmailSettings.Path)
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+builder.Services.AddOptions<ReportSettings>()
+                .BindConfiguration(ReportSettings.Path)
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
 
 builder.Services.AddSwaggerGen(c =>
 {

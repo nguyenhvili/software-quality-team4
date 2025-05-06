@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Domain\Report\ValueObjects\" />
-    <Folder Include="Infrastructure\Persistance\Migrations\" />
   </ItemGroup>
 
 </Project>

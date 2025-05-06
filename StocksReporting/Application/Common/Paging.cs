@@ -1,12 +1,10 @@
 using ErrorOr;
-using StocksReporting.Domain.Common;
 
 namespace StocksReporting.Application.Common;
 
-public class Paging : ValueObject
+public class Paging
 {
     private const int MaxPageSize = 100;
-
     private int Page { get; }
     private int PageSize { get; }
 
@@ -34,7 +32,7 @@ public class Paging : ValueObject
     public int Skip() => (Page - 1) * PageSize;
     public int Take() => PageSize;
 
-    protected override IEnumerable<object?> GetEqualityComponents()
+    protected IEnumerable<object?> GetEqualityComponents()
     {
         yield return Page;
         yield return PageSize;

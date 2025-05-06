@@ -1,5 +1,7 @@
-﻿using Quartz;
+﻿using Microsoft.Extensions.Options;
+using Quartz;
 using StocksReporting.Application.Report;
+using StocksReporting.Configuration;
 
 namespace StocksReporting.Application.Services.Scheduling;
 
@@ -9,11 +11,11 @@ public class CreateReportJob : IJob
     private readonly ILogger<CreateReportJob> _logger;
     private readonly string _downloadPath;
 
-    public CreateReportJob(CreateReportCommandHandler handler, ILoggerFactory loggerFactory, IConfiguration configuration)
+    public CreateReportJob(CreateReportCommandHandler handler, ILoggerFactory loggerFactory, IOptions<ReportSettings> options)
     {
         _handler = handler;
         _logger = loggerFactory.CreateLogger<CreateReportJob>();
-        _downloadPath = configuration["ReportDownloadPath"] ?? "";
+        _downloadPath = options.Value.DownloadPath;
     }
 
     public async Task Execute(IJobExecutionContext context)

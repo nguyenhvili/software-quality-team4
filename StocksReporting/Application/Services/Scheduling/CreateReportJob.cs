@@ -6,16 +6,27 @@ namespace StocksReporting.Application.Services.Scheduling;
 public class CreateReportJob : IJob
 {
     private readonly CreateReportCommandHandler _handler;
+    private readonly ILogger<CreateReportJob> _logger;
+    private readonly string _downloadPath;
 
-    private readonly string _downloadPath = "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_INNOVATION_ETF_ARKK_HOLDINGS.csv";
-
-    public CreateReportJob(CreateReportCommandHandler handler)
+    public CreateReportJob(CreateReportCommandHandler handler, ILoggerFactory loggerFactory, IConfiguration configuration)
     {
         _handler = handler;
+        _logger = loggerFactory.CreateLogger<CreateReportJob>();
+        _downloadPath = configuration["ReportDownloadPath"] ?? "";
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
+        _logger.LogInformation("Create report job started at {Time}", DateTime.UtcNow);
+
         var result = await _handler.Handle(new CreateReportCommand(_downloadPath, DateTime.Now));
+        if (result.IsError)
+        {
+            _logger.LogError("Create report job failed: {Errors}", result.Errors);
+            return;
+        }
+
+        _logger.LogInformation("Create report job completed successfully at {Time}", DateTime.UtcNow);
     }
 }

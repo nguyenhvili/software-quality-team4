@@ -1,17 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Quartz;
-using RegistR.Attributes.Extensions;
-using StocksReporting.Infrastructure;
-using System.Reflection;
+using StocksReportingLibrary.Infrastructure;
 using Wolverine;
 using Wolverine.Http;
-using StocksReporting.Application.Report;
-using StocksReporting.Application.Services;
-using StocksReporting.Application.Services.Scheduling;
-using StocksReporting.Infrastructure.Email;
-using StocksReporting.Infrastructure.Persistence.Services;
-using StocksReporting.Configuration;
+using StocksReportingLibrary.Infrastructure.Email;
+using StocksReportingLibrary.Configuration;
+using StocksReportingLibrary;
+using StocksReportingLibrary.Application.Services.Scheduling;
+using StocksReportingLibrary.Application.Services.Email;
+using CsvHelper;
+using StocksReportingLibrary.Application.Services.File;
+using StocksReportingLibrary.Infrastructure.File;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +26,6 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -65,23 +64,19 @@ builder.Services.AddQuartz(q =>
 
 builder.Services.AddQuartzHostedService();
 
-
 var dbString = builder.Configuration.GetConnectionString("DbString");
-builder.Services.InstallRegisterAttribute(Assembly.GetExecutingAssembly());
-builder.Services.AddDbContext<StocksReportingDbContext>(options =>
-{
-    options.UseSqlite(dbString);
-});
+builder.Services.InstallStocksReportingLibrary(dbString!);
 
 builder.Host.UseWolverine();
 
 builder.Services.AddLogging();
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<ReportEmailService>();
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
-builder.Services.AddScoped(typeof(IRepository<>), typeof(EfCoreRepository<>));
-
+builder.Services.AddScoped<IReportEmailService, ReportEmailService>();
+builder.Services.AddScoped<IDownloader, CsvDownloader>();
+builder.Services.AddScoped<StocksReportingLibrary.Application.Services.File.IWriter, StocksReportingLibrary.Infrastructure.File.CsvWriter>();
+builder.Services.AddScoped<StocksReportingLibrary.Application.Services.File.IParser, StocksReportingLibrary.Infrastructure.File.CsvParser>();
 
 var app = builder.Build();
 

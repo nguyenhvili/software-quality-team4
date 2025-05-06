@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.0'
+
+    - name: Install .NET dependencies
+      run: dotnet restore ./StocksReporting/StocksReporting.csproj
+
+    - name: Build .NET backend
+      run: dotnet build --no-restore ./StocksReporting/StocksReporting.csproj
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.20.8'
+
+    - name: Install FE dependencies
+      run: npm ci
+      working-directory: ./reactfrontend
+
+    - name: Build FE
+      run: npm run build
+      working-directory: ./reactfrontend
+
+    - name: Run tests (TODO)
+      if: false
+      run: echo "Tests will be added later"

@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Report\ValueObjects\" />
+    <ProjectReference Include="..\StocksReportingLibrary\StocksReportingLibrary.csproj" />
   </ItemGroup>
 
 </Project>

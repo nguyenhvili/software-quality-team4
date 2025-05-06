@@ -41,7 +41,7 @@ public class CreateReportCommandHandler
     {
         var latestReport = (await _queryObject.OrderBy(report => report.CreatedAt, false).ExecuteAsync()).FirstOrDefault();
 
-        var holdingsResult = await _csvParser.Parse(command.DownloadPath);
+        var holdingsResult = await _csvParser.ParseAsync(command.DownloadPath);
         if (holdingsResult.IsError)
         {
             return holdingsResult.Errors;

@@ -1,54 +1,75 @@
 ﻿using StocksReporting.Domain.Report.Holding;
-using System.Net.Http;
 using ErrorOr;
-using System.Net.Security;
-using System.Formats.Asn1;
 using System.Globalization;
 using CsvHelper;
-using Spectre.Console;
-using System.Text.RegularExpressions;
+using CsvHelper.Configuration;
 
 namespace StocksReporting.Application.Services.CsvService;
 
 public class CsvParser
 {
-    private readonly HttpClient httpClient;
+    private readonly CsvDownloader _csvDownloader;
 
-    public CsvParser(HttpClient httpClient)
+    public CsvParser(CsvDownloader csvDownloader)
     {
-        this.httpClient = httpClient;
+        _csvDownloader = csvDownloader;
     }
 
-    public async Task<ErrorOr<List<Holding>>> Parse(string csvUrl)
+    public async Task<ErrorOr<List<Holding>>> ParseAsync(string csvUrl)
     {
-        var holdings = new List<Holding>();
-        using (var response = await httpClient.GetAsync(csvUrl))
-        using (var stream = await response.Content.ReadAsStreamAsync())
+        var stringReaderResult = await _csvDownloader.Download(csvUrl);
+        if (stringReaderResult.IsError)
         {
-            using (var reader = new StreamReader(stream))
-
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                csv.Read();
-                csv.ReadHeader();
-                while (csv.Read())
-                {
-                    if (csv.Parser.Count != csv.HeaderRecord?.Length)
-                        continue;
-
-                    string company = csv.GetField("company");
-                    string ticker = csv.GetField("ticker");
-                    long shares = long.Parse(csv.GetField("shares").Replace(",", ""));
-                    decimal weight = decimal.Parse(csv.GetField("weight (%)").Replace("%", ""), CultureInfo.InvariantCulture);
-                    var holdingResult = Holding.Create(company, ticker, shares, 0, weight);
-                    if (holdingResult.IsError)
-                    {
-                        return holdingResult.Errors;
-                    }
-                    holdings.Add(holdingResult.Value);
-                }
-            }
+            return stringReaderResult.Errors;
         }
+        var stringReader = stringReaderResult.Value;
+        var holdings = new List<Holding>();
+        var csv = new CsvReader(stringReader, CultureInfo.InvariantCulture);
+        csv.Context.RegisterClassMap<HoldingMap>();
+        
+        var parsedRecords = csv.GetRecordsAsync<ParsedHolding>();
+        await foreach (var record in parsedRecords)
+        {
+            var holdingResult = Holding.Create(record.Company, record.Ticker, record.Shares, 0, record.Weight);
+            if (holdingResult.IsError)
+            {
+                return holdingResult.Errors;
+            }
+            holdings.Add(holdingResult.Value);
+        }
+        
         return holdings;
+    }
+    private sealed class HoldingMap : ClassMap<ParsedHolding>
+    {
+        public HoldingMap()
+        {
+            Map(m => m.Company).Name("company");
+            Map(m => m.Ticker).Name("ticker");
+            Map(m => m.Shares).Name("shares").Convert(args =>
+                long.Parse(args.Row.GetField("shares").Replace(",", ""))
+            );
+            Map(m => m.Weight).Name("weight (%)").Convert(args =>
+                decimal.Parse(args.Row.GetField("weight (%)").Replace("%", ""), CultureInfo.InvariantCulture)
+            );
+        }
+    }
+
+    private record ParsedHolding
+    {
+        public string Company { get; set; }
+        public string Ticker { get; set; }
+        public long Shares { get; set; }
+        public decimal Weight { get; set; }
+
+        public ParsedHolding() { }
+
+        public ParsedHolding(string company, string ticker, long shares, decimal weight)
+        {
+            Company = company;
+            Ticker = ticker;
+            Shares = shares;
+            Weight = weight;
+        }
     }
 }

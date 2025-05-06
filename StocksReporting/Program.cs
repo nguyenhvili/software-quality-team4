@@ -66,6 +66,9 @@ builder.Services.AddDbContext<StocksReportingDbContext>(options =>
 
 builder.Host.UseWolverine();
 
+builder.Services.AddLogging();
+builder.Services.AddHttpClient();
+
 builder.Services.AddScoped<ReportEmailService>();
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfCoreRepository<>));

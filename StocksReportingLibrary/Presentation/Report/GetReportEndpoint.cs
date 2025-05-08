@@ -2,22 +2,33 @@ using StocksReportingLibrary.Application.Report;
 using Wolverine;
 using Wolverine.Http;
 using ErrorOr;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 
 namespace StocksReportingLibrary.Presentation.Report;
 
 public class GetReportEndpoint
 {
-    [WolverineGet("reports/{id}")]
-    public static async Task<IResult> GetReportAsync(Guid id, IMessageBus sender)
+    private readonly ILogger<GetReportEndpoint> _logger;
+
+    public GetReportEndpoint(ILogger<GetReportEndpoint> logger)
     {
+        _logger = logger;
+    }
+
+    [WolverineGet("reports/{id}")]
+    public async static Task<IResult> GetReportAsync(Guid id, IMessageBus sender, ILogger<GetReportEndpoint> logger)
+    {
+        logger.LogInformation("Received request to get report with Id: {Id}", id);
+
         var command = new GetReportCommand(id);
 
         var result = await sender.InvokeAsync<ErrorOr<GetReportCommand.Result>>(command);
-        
+
         return result.Match(
             success =>
             {
+                logger.LogInformation("Report retrieved successfully. Id: {Id}", id);
                 var r = success.Report;
                 var dto = new Response(
                     r.Id,
@@ -34,10 +45,14 @@ public class GetReportEndpoint
                 );
                 return Results.Ok(dto);
             },
-            errors => Results.NotFound(errors.Select(e => e.Code))
+            errors =>
+            {
+                logger.LogWarning("Report with Id: {Id} not found. Errors: {Errors}", id, errors);
+                return Results.NotFound(errors.Select(e => e.Code));
+            }
         );
     }
-    
+
     public record Response(
         Guid Id,
         string FilePath,

@@ -43,7 +43,7 @@ public class Holding : AggregateRoot<HoldingId>
         return new Holding(HoldingId.CreateUnique(), Company.Create(company), Ticker.Create(ticker), Shares.Create(shares), SharesPercent.Create(sharesPercent), Weight.Create(weight));
     }
 
-    internal void UpdateSharesPercent(SharesPercent sharesPercent)
+    public void UpdateSharesPercent(SharesPercent sharesPercent)
     {
         this.SharesPercent = sharesPercent;
     }

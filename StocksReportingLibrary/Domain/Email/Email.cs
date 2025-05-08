@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using StocksReportingLibrary.Domain.Common;
 using StocksReportingLibrary.Domain.Email.ValueObjects;
+using System.ComponentModel.DataAnnotations;
 
 namespace StocksReportingLibrary.Domain.Email;
 
@@ -23,6 +24,11 @@ public class Email : AggregateRoot<EmailId>
         if (email == null || email.Length == 0)
         {
             return Error.Validation("The email is empty!");
+        }
+        var emailValidation = new EmailAddressAttribute();
+        if (!emailValidation.IsValid(email))
+        {
+            return Error.Validation("The email is not in valid format!");
         }
         return new Email(EmailId.CreateUnique(), EmailValue.Create(email));
     }

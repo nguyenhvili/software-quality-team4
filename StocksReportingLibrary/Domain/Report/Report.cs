@@ -30,6 +30,11 @@ public class Report : AggregateRoot<ReportId>
             return Error.Validation("Report.FilePath", "File path cannot be empty.");
         }
 
+        if (holdings is null)
+        {
+            return Error.Validation("Report.Holdings", "Holdings is null.");
+        }
+
         return new Report(ReportId.CreateUnique(), ReportPathValue.Create(filePath), createdAt, holdings);
     }
 }

@@ -5,8 +5,8 @@ namespace StocksReportingLibrary.Application.Common;
 public class Paging
 {
     private const int MaxPageSize = 100;
-    private int Page { get; }
-    private int PageSize { get; }
+    public int Page { get; }
+    public int PageSize { get; }
 
     private Paging(int page, int pageSize)
     {

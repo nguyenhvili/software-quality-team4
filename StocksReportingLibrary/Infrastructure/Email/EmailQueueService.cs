@@ -17,8 +17,6 @@ public class EmailQueueService(
     private readonly ILogger<EmailQueueService> _logger = logger;
     private readonly IRepository<Domain.Email.EmailMessage.EmailMessage> _emailMessageRepository = emailMessageRepository;
 
-    public const int MaxRetryCount = 5;
-
     public async Task<ErrorOr<IEnumerable<IEmailQueue.EmailQueueItem>>> GetPendingEmailsAsync(int maxCount = 50)
     {
         _logger.LogInformation("Fetching pending emails from the database.");

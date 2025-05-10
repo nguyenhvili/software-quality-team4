@@ -5,6 +5,7 @@ using Polly.Retry;
 using Quartz;
 using StocksReportingLibrary.Application.Report;
 using StocksReportingLibrary.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace StocksReportingLibrary.Application.Services.Scheduling;
 
@@ -14,10 +15,13 @@ public class CreateReportJob : IJob
     private readonly ILogger<CreateReportJob> _logger;
     private readonly string _downloadPath;
 
-    public CreateReportJob(CreateReportCommandHandler handler, ILoggerFactory loggerFactory, IOptions<ReportSettings> options)
+    public CreateReportJob(
+        CreateReportCommandHandler handler,
+        ILogger<CreateReportJob> logger,
+        IOptions<ReportSettings> options)
     {
         _handler = handler;
-        _logger = loggerFactory.CreateLogger<CreateReportJob>();
+        _logger = logger;
         _downloadPath = options.Value.DownloadPath;
     }
 
@@ -46,6 +50,7 @@ public class CreateReportJob : IJob
                 if (result.IsError)
                 {
                     var errors = string.Join(",", result.Errors.Select(error => error.Description));
+                    _logger.LogError("Create report job failed: {Errors}", result.Errors);
                     throw new ApplicationException($"CreateReportCommand failed with errors: {errors}");
                 }
 

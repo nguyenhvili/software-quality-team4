@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StocksReporting", "StocksRe
 		{591D691E-C46A-483F-B500-34D3771B529C} = {591D691E-C46A-483F-B500-34D3771B529C}
 	EndProjectSection
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reactfrontend", "ReactFrontend\reactfrontend.esproj", "{591D691E-C46A-483F-B500-34D3771B529C}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reactfrontend", "reactfrontend\reactfrontend.esproj", "{591D691E-C46A-483F-B500-34D3771B529C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StocksReportingLibrary", "StocksReportingLibrary\StocksReportingLibrary.csproj", "{E9DFBD3D-ACB5-4E26-85A4-04049AF85A2F}"
 EndProject

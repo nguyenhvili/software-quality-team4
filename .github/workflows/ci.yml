@@ -21,13 +21,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore ./YourSolution.sln
+      run: dotnet restore ./StocksReporting.sln
 
     - name: Build solution
-      run: dotnet build --no-restore ./YourSolution.sln
+      run: dotnet build --no-restore ./StocksReporting.sln
 
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal ./YourSolution.sln
+      run: dotnet test --no-build --verbosity normal ./StocksReporting.sln
 
     - name: Setup Node.js
       uses: actions/setup-node@v3

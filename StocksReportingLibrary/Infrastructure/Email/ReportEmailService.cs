@@ -71,7 +71,7 @@ public class ReportEmailService : IReportEmailService
                    "Please find the attached report.",
                    [report.ReportPathValue.PathValue]
                 );
-                _logger.LogDebug("Enqueued sending report email to: {Email}", email);
+                _logger.LogDebug("Enqueued report email to: {Email}", email);
             }
 
             _logger.LogInformation("Report with ID: {ReportId} enqueued to {SentEmailCount} emails successfully.",

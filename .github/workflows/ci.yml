@@ -20,11 +20,14 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Install .NET dependencies
-      run: dotnet restore ./StocksReporting/StocksReporting.csproj
+    - name: Restore dependencies
+      run: dotnet restore ./YourSolution.sln
 
-    - name: Build .NET backend
-      run: dotnet build --no-restore ./StocksReporting/StocksReporting.csproj
+    - name: Build solution
+      run: dotnet build --no-restore ./YourSolution.sln
+
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal ./YourSolution.sln
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -38,7 +41,3 @@ jobs:
     - name: Build FE
       run: npm run build
       working-directory: ./reactfrontend
-
-    - name: Run tests (TODO)
-      if: false
-      run: echo "Tests will be added later"

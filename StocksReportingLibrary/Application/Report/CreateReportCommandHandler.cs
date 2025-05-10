@@ -37,7 +37,7 @@ public class CreateReportCommandHandler
 
             if (previousHolding is not null && previousHolding.Shares.Value > 0)
             {
-                holding.UpdateSharesPercent( SharesPercent.Create( Math.Round(((holding.Shares.Value - previousHolding.Shares.Value) / (decimal)previousHolding.Shares.Value) * 100, 2) ) );
+                holding.UpdateSharesPercent(SharesPercent.Create(Math.Round(((holding.Shares.Value - previousHolding.Shares.Value) / (decimal)previousHolding.Shares.Value) * 100, 2)));
             }
         }
     }

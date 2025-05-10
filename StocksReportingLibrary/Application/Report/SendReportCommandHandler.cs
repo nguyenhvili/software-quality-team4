@@ -25,13 +25,13 @@ public class SendReportHandler
 
         if (result.IsError)
         {
-            _logger.LogError("Failed to send report: {Errors}", result.Errors);
+            _logger.LogError("Failed to enqueue report: {Errors}", result.Errors);
             return result.Errors;
         }
 
         var value = result.Value;
 
-        _logger.LogInformation("Report sent successfully. ReportId: {ReportId}, SentTo: {SentTo}",
+        _logger.LogInformation("Report enqueued successfully. ReportId: {ReportId}, SentTo: {SentTo}",
             value.ReportId, string.Join(",", value.SentTo));
 
         return new SendReportEndpoint.Response.SentReport(

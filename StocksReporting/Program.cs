@@ -9,7 +9,8 @@ using StocksReportingLibrary.Configuration;
 using StocksReportingLibrary;
 using StocksReportingLibrary.Application.Services.Scheduling;
 using StocksReportingLibrary.Application.Services.Email;
-using CsvHelper;
+using Polly;
+using Polly.Retry;
 using StocksReportingLibrary.Application.Services.File;
 using StocksReportingLibrary.Infrastructure.File;
 
@@ -46,6 +47,17 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Stocks Reporting", Version = "v1" });
 });
 
+builder.Services.AddResiliencePipeline("MailRetryPolicy", pipeline =>
+{
+    pipeline.AddRetry(new RetryStrategyOptions
+    {
+        MaxRetryAttempts = 3,
+        Delay = TimeSpan.FromSeconds(3),
+        BackoffType = DelayBackoffType.Exponential,
+        UseJitter = true
+    });
+});
+
 builder.Services.AddQuartz(q =>
 {
     var jobKey = new JobKey("CreateReportJob");
@@ -59,7 +71,17 @@ builder.Services.AddQuartz(q =>
         .ForJob(jobKey)
         .WithIdentity("CreateReportJobTrigger")
         .StartNow());
-        //.WithCronSchedule("0 0 0 1 * ?"));
+    //.WithCronSchedule("0 0 0 1 * ?"));
+
+    var emailJobKey = new JobKey("EmailJob");
+    q.AddJob<SendQueuedEmailsJob>(opts => opts.WithIdentity(emailJobKey));
+    q.AddTrigger(opts => opts
+        .ForJob(emailJobKey)
+        .WithIdentity("EmailJobTrigger")
+    .WithSimpleSchedule(x => x
+        .WithInterval(TimeSpan.FromMinutes(1))
+        .RepeatForever()));
+
 });
 
 builder.Services.AddQuartzHostedService();
@@ -73,6 +95,7 @@ builder.Services.AddLogging();
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
+builder.Services.AddScoped<IEmailQueue, EmailQueueService>();
 builder.Services.AddScoped<IReportEmailService, ReportEmailService>();
 builder.Services.AddScoped<IDownloader, CsvDownloader>();
 builder.Services.AddScoped<StocksReportingLibrary.Application.Services.File.IWriter, StocksReportingLibrary.Infrastructure.File.CsvWriter>();

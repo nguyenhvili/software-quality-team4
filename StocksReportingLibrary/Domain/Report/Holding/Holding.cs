@@ -7,7 +7,7 @@ namespace StocksReportingLibrary.Domain.Report.Holding;
 public class Holding : AggregateRoot<HoldingId>
 {
     public Company Company { get; private set; }
-    public Ticker Ticker {  get; private set; }
+    public Ticker Ticker { get; private set; }
     public Shares Shares { get; private set; }
     public SharesPercent SharesPercent { get; private set; }
     public Weight Weight { get; private set; }

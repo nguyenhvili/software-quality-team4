@@ -1,3 +1,4 @@
+using ErrorOr;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
@@ -13,13 +14,13 @@ public class SmtpEmailSender : IEmailSender
     private readonly EmailSettings _settings;
     private readonly ILogger<SmtpEmailSender> _logger;
 
-    public SmtpEmailSender(IOptions<EmailSettings> options, ILogger<SmtpEmailSender> logger) 
+    public SmtpEmailSender(IOptions<EmailSettings> options, ILogger<SmtpEmailSender> logger)
     {
         _settings = options.Value;
         _logger = logger;
     }
 
-    public async Task SendEmailAsync(string to, string subject, string body, string[] attachments)
+    public async Task<ErrorOr<Success>> SendEmailAsync(string to, string subject, string body, string[] attachments)
     {
         _logger.LogInformation("Sending email to: {To}, Subject: {Subject}", to, subject);
 
@@ -50,7 +51,9 @@ public class SmtpEmailSender : IEmailSender
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error sending email to: {To}", to);
-            throw;
+            return Error.Failure("EmailSendingError", "Failed to send email.");
         }
+
+        return new ErrorOr<Success>();
     }
 }

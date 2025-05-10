@@ -11,18 +11,18 @@ public class ReportEmailService : IReportEmailService
 {
     private readonly IQueryObject<Domain.Email.Email> _emailQuery;
     private readonly IQueryObject<Domain.Report.Report> _reportQuery;
-    private readonly IEmailSender _emailSender;
+    private readonly IEmailQueue _emailQueue;
     private readonly ILogger<ReportEmailService> _logger;
 
     public ReportEmailService(
         IQueryObject<Domain.Email.Email> emailQuery,
         IQueryObject<Domain.Report.Report> reportQuery,
-        IEmailSender emailSender,
+        IEmailQueue emailQueue,
         ILogger<ReportEmailService> logger)
     {
         _emailQuery = emailQuery;
         _reportQuery = reportQuery;
-        _emailSender = emailSender;
+        _emailQueue = emailQueue;
         _logger = logger;
     }
 
@@ -65,16 +65,16 @@ public class ReportEmailService : IReportEmailService
         {
             foreach (var email in emails)
             {
-                await _emailSender.SendEmailAsync(
-                    to: email,
-                    subject: "Weekly Report Export",
-                    body: "Please find the attached report.",
-                    attachments: new[] { report.ReportPathValue.PathValue }
+                await _emailQueue.EnqueueEmailAsync(
+                   email,
+                    "Weekly Report Export",
+                   "Please find the attached report.",
+                   [report.ReportPathValue.PathValue]
                 );
-                _logger.LogDebug("Sent report to email: {Email}", email);
+                _logger.LogDebug("Enqueued sending report email to: {Email}", email);
             }
 
-            _logger.LogInformation("Report with ID: {ReportId} sent to {SentEmailCount} emails successfully.",
+            _logger.LogInformation("Report with ID: {ReportId} enqueued to {SentEmailCount} emails successfully.",
                 reportId, emails.Count);
             return new SendReportResult(reportId, emails);
         }

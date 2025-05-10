@@ -5,11 +5,19 @@ using Microsoft.Extensions.Logging;
 
 namespace StocksReportingLibrary.Application.Report;
 
-public class GetReportCommandHandler(IQueryObject<Domain.Report.Report> queryObject)
+public class GetReportCommandHandler
 {
     private readonly IQueryObject<Domain.Report.Report> _queryObject;
     private readonly ILogger<GetReportCommandHandler> _logger;
-    
+
+    public GetReportCommandHandler(
+        IQueryObject<Domain.Report.Report> queryObject,
+        ILogger<GetReportCommandHandler> logger)
+    {
+        _queryObject = queryObject;
+        _logger = logger;
+    }
+
     public async Task<ErrorOr<GetReportCommand.Result>> Handle(GetReportCommand command)
     {
         _logger.LogInformation("GetReportCommandHandler for ReportId: {ReportId}", command.Id);

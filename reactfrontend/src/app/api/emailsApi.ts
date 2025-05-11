@@ -1,23 +1,20 @@
-import axios from "axios";
 import { Email, EmailCreate } from "../types/email";
-
-const axiosInstance = axios.create({
-  baseURL: `http://localhost:5025/`, //add BE url
-});
+import { base } from "./base";
+import { GetParams } from "../types/common";
 
 async function create(payload: EmailCreate) {
-  const resp = await axiosInstance.post<Email>("emails", payload);
+  const resp = await base.post<Email>("emails", payload);
   return resp.data;
 }
 
 async function deleteEmail(id: string) {
-  const resp = await axiosInstance.delete<{}>(`emails/${id}`);
+  const resp = await base.delete<{}>(`emails/${id}`);
   return resp.data;
 }
 
-async function getAll() {
-  const resp = await axiosInstance.get<{ emails: Email[] }>("emails", {
-    params: { page: 1, pageSize: 20 }, // TODO: loading other pages
+async function getAll(params: GetParams) {
+  const resp = await base.get<{ emails: Email[] }>("emails", {
+    params,
   });
   return resp.data;
 }

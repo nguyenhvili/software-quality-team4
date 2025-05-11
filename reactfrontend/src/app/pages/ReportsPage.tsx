@@ -8,6 +8,7 @@ import ReportDetailDialog from "../components/dialogs/ReportDetailDialog";
 import { ReportAll } from "../types/report";
 import SendEmailDialog from "../components/dialogs/SendEmailDialog";
 import Table from "../components/Table";
+import Pagination from "../components/Pagination";
 
 type ReportsPageProps = {};
 
@@ -18,8 +19,10 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
   const [isSendDialogOpen, setIsSendDialogOpen] = useState<ReportAll | null>(
     null
   );
+  const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useReports();
+  const { data, isLoading } = useReports(page);
+  const hasNext = useMemo(() => !data || data.reports.length < 10, [data]);
 
   const columnHelper = createColumnHelper<ReportAll>();
 
@@ -75,6 +78,7 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
           noContentMessage="No reports found."
           isLoading={isLoading}
         />
+        <Pagination page={page} setPage={setPage} hasNext={hasNext} />
       </div>
       {isDetailDialogOpen && (
         <ReportDetailDialog

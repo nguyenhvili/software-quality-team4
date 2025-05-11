@@ -1,24 +1,22 @@
 import axios from "axios";
 import { ReportAll, ReportSend, ReportType } from "../types/report";
-
-const axiosInstance = axios.create({
-  baseURL: `http://localhost:5025/`, //add BE url
-});
+import { base } from "./base";
+import { GetParams } from "../types/common";
 
 async function send(payload: ReportSend) {
-  const resp = await axiosInstance.post<ReportSend>("reports/send", payload);
+  const resp = await base.post<ReportSend>("reports/send", payload);
   return resp.data;
 }
 
-async function getAll() {
-  const resp = await axiosInstance.get<{ reports: ReportAll[] }>("reports", {
-    params: { page: 1, pageSize: 20 },
+async function getAll(params: GetParams) {
+  const resp = await base.get<{ reports: ReportAll[] }>("reports", {
+    params,
   });
   return resp.data;
 }
 
 async function getReport(id: string) {
-  const resp = await axiosInstance.get<ReportType>("reports/" + id);
+  const resp = await base.get<ReportType>("reports/" + id);
   return resp.data;
 }
 

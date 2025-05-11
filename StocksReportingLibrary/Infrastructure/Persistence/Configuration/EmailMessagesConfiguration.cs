@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using StocksReportingLibrary.Domain.Email.EmailMessage.EmailAttachmentPath.ValueObjects;
+using StocksReportingLibrary.Domain.EmailAttachmentPath.ValueObjects;
 using StocksReportingLibrary.Domain.EmailMessage.Enums;
 using StocksReportingLibrary.Domain.EmailAttachmentPath;
 using StocksReportingLibrary.Domain.EmailMessage;

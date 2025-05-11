@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using ErrorOr;
 using StocksReportingLibrary.Domain.Common;
-using StocksReportingLibrary.Domain.Email.EmailMessage.Enums;
-using StocksReportingLibrary.Domain.Email.EmailMessage.ValueObjects;
+using StocksReportingLibrary.Domain.EmailMessage.Enums;
+using StocksReportingLibrary.Domain.EmailMessage.ValueObjects;
 
-namespace StocksReportingLibrary.Domain.Email.EmailMessage;
+namespace StocksReportingLibrary.Domain.EmailMessage;
 
 public class EmailMessage : AggregateRoot<EmailMessageId>
 {
@@ -20,7 +20,6 @@ public class EmailMessage : AggregateRoot<EmailMessageId>
 
     public EmailMessage()
     {
-
     }
 
     private EmailMessage(EmailMessageId emailId, EmailRecipient recipient, EmailSubject subject, EmailBody body, IEnumerable<EmailAttachmentPath.EmailAttachmentPath> attachments, EmailSendStatus status, RetryCount retryCount) : base(emailId)
@@ -35,24 +34,24 @@ public class EmailMessage : AggregateRoot<EmailMessageId>
 
     public void RecordSent()
     {
-        EmailSendStatus.UpdateStatus(EEmailSendStatus.Sent);
+        EmailSendStatus = EmailSendStatus.Sent;
     }
 
     public void RecordRetry()
     {
         if (RetryCount.Value >= MaxRetryCount)
         {
-            EmailSendStatus.UpdateStatus(EEmailSendStatus.Failed);
+           EmailSendStatus = EmailSendStatus.Failed;
             return;
         }
 
         RetryCount.Increment();
-        EmailSendStatus.UpdateStatus(EEmailSendStatus.Retryable);
+        EmailSendStatus = EmailSendStatus.Retryable;
     }
 
     public void MarkAsInProgress()
     {
-        EmailSendStatus.UpdateStatus(EEmailSendStatus.InProgress);
+        EmailSendStatus = EmailSendStatus.InProgress;
     }
 
     public static ErrorOr<EmailMessage> Create(string recipient, string subject, string body, IEnumerable<EmailAttachmentPath.EmailAttachmentPath> attachments)
@@ -76,12 +75,11 @@ public class EmailMessage : AggregateRoot<EmailMessageId>
         {
             return Error.Validation("The body is empty!");
         }
-
         if (attachments.Any(p => p.Path == null || p.Path.Length == 0))
         {
             return Error.Validation("The attachment path is empty!");
         }
 
-        return new EmailMessage(EmailMessageId.CreateUnique(), EmailRecipient.Create(recipient), EmailSubject.Create(subject), EmailBody.Create(body), attachments, EmailSendStatus.CreateDefault(), RetryCount.Create(0));
+        return new EmailMessage(EmailMessageId.CreateUnique(), EmailRecipient.Create(recipient), EmailSubject.Create(subject), EmailBody.Create(body), attachments, EmailSendStatus.Pending, RetryCount.Create(0));
     }
 }

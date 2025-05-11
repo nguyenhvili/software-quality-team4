@@ -5,7 +5,7 @@ import { IconDetail } from "../../assets/IconDetail";
 import { IconEmail } from "../../assets/IconEmail";
 import { useReports } from "../hooks/useReports";
 import ReportDetailDialog from "../components/dialogs/ReportDetailDialog";
-import { ReportAll } from "../types/report";
+import { ReportBase } from "../types/report";
 import SendEmailDialog from "../components/dialogs/SendEmailDialog";
 import Table from "../components/Table";
 import Pagination from "../components/Pagination";
@@ -16,7 +16,7 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<string | null>(
     null
   );
-  const [isSendDialogOpen, setIsSendDialogOpen] = useState<ReportAll | null>(
+  const [isSendDialogOpen, setIsSendDialogOpen] = useState<ReportBase | null>(
     null
   );
   const [page, setPage] = useState(1);
@@ -24,7 +24,7 @@ const ReportsPage: FC<ReportsPageProps> = (props) => {
   const { data, isLoading } = useReports(page);
   const hasNext = useMemo(() => !data || data.reports.length < 10, [data]);
 
-  const columnHelper = createColumnHelper<ReportAll>();
+  const columnHelper = createColumnHelper<ReportBase>();
 
   const cols = useMemo(
     () => [

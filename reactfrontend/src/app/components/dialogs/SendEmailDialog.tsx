@@ -1,24 +1,26 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { FC, useCallback, useMemo, useState } from "react";
-import { ReportAll, ReportSend } from "src/app/types/report";
+import { ReportBase, ReportSend } from "src/app/types/report";
 import { useEmails } from "../../hooks/useEmails";
 import { useReportSend } from "../../hooks/useReports";
 import { Email } from "src/app/types/email";
 import Table from "../Table";
 import { formatDate } from "../../utils/formatDate";
 import CustomButton from "../CustomButton";
-import toast from "react-hot-toast";
+import Pagination from "../Pagination";
 
 type SendEmailDialogProps = {
-  report: ReportAll;
+  report: ReportBase;
   onClose: (value: null) => void;
 };
 
 const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
   const { report, onClose } = props;
+  const [page, setPage] = useState(1);
 
-  const { data: emails, isLoading } = useEmails();
+  const { data: emails, isLoading } = useEmails(page);
+  const hasNext = useMemo(() => !emails || emails.emails.length < 10, [emails]);
 
   const [checkedEmails, setCheckedEmails] = useState<Set<string>>(new Set());
   const { mutateAsync: sendEmail } = useReportSend();
@@ -98,6 +100,7 @@ const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
             noContentMessage="No emails found."
             isLoading={isLoading}
           />
+          <Pagination page={page} setPage={setPage} hasNext={hasNext} />
           <div className="mt-6 flex justify-end gap-3">
             <CustomButton variant="secondary" onClick={handleClose}>
               Cancel

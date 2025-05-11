@@ -1,5 +1,5 @@
 using StocksReportingLibrary.Domain.Common;
-using StocksReportingLibrary.Domain.Email.EmailMessage.EmailAttachmentPath.ValueObjects;
+using StocksReportingLibrary.Domain.EmailAttachmentPath.ValueObjects;
 
 namespace StocksReportingLibrary.Domain.EmailAttachmentPath;
 

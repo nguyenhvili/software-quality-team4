@@ -1,6 +1,6 @@
 using StocksReportingLibrary.Domain.Common;
 
-namespace StocksReportingLibrary.Domain.Email.EmailMessage.EmailAttachmentPath.ValueObjects;
+namespace StocksReportingLibrary.Domain.EmailAttachmentPath.ValueObjects;
 public class EmailAttachmentPathId : ValueObject
 {
     public Guid Value { get; private set; }

@@ -4,15 +4,18 @@ import ReportsApi from "../api/reportsApi";
 import { ReportSend } from "../types/report";
 import toast from "react-hot-toast";
 
+const PAGE_SIZE = 10;
+
 const reportsQueryKeys = {
   all: () => ["reports"] as const,
+  page: (page: number) => [...reportsQueryKeys.all(), page] as const,
   detail: (reportId: string) => [...reportsQueryKeys.all(), reportId] as const,
 };
 
-export const useReports = () => {
+export const useReports = (page: number) => {
   return useQuery({
-    queryKey: reportsQueryKeys.all(),
-    queryFn: () => ReportsApi.getAll(),
+    queryKey: reportsQueryKeys.page(page),
+    queryFn: () => ReportsApi.getAll({ page, pageSize: PAGE_SIZE }),
   });
 };
 

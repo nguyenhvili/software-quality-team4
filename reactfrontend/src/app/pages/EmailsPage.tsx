@@ -8,18 +8,23 @@ import DeleteEmailDialog from "../components/dialogs/DeleteEmailDialog";
 import CreateEmailDialog from "../components/dialogs/CreateEmailDialog";
 import { useEmails } from "../hooks/useEmails";
 import Table from "../components/Table";
+import Pagination from "../components/Pagination";
 
 const EmailsPage: FC = () => {
   const [emailIdToDelete, setEmailIdToDelete] = useState<null | string>(null);
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState<boolean>(false);
+  const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useEmails();
+  const { data, isLoading } = useEmails(page);
+
+  const hasNext = useMemo(() => !data || data.emails.length < 10, [data]);
 
   const columnHelper = createColumnHelper<Email>();
 
   const cols = useMemo(
     () => [
       columnHelper.accessor("emailValue", {
+        header: "Email",
         cell: ({ renderValue }) => <div>{renderValue()}</div>,
       }),
       columnHelper.display({
@@ -59,6 +64,7 @@ const EmailsPage: FC = () => {
           noContentMessage="No emails found."
           isLoading={isLoading}
         />
+        <Pagination page={page} setPage={setPage} hasNext={hasNext} />
       </div>
       {emailIdToDelete && (
         <DeleteEmailDialog

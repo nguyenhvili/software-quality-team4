@@ -4,12 +4,13 @@ import EmailsApi from "../api/emailsApi";
 import { EmailCreate } from "../types/email";
 import toast from "react-hot-toast";
 
+const PAGE_SIZE = 10;
 const emailsQueryKey = ["emails"];
 
-export const useEmails = () => {
+export const useEmails = (page: number) => {
   return useQuery({
-    queryKey: emailsQueryKey,
-    queryFn: () => EmailsApi.getAll(),
+    queryKey: ["emails", page],
+    queryFn: () => EmailsApi.getAll({ page, pageSize: PAGE_SIZE }),
   });
 };
 

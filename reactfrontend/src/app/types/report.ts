@@ -1,13 +1,20 @@
-export type ReportType = {
+export type ReportBase = {
   id: string;
-  filePath: string;
   createdAt: string;
-  // add rest
 };
 
-export type ReportAll = {
+export type ReportType = ReportBase & {
+  filePath: string;
+  holdings: Holding[];
+};
+
+export type Holding = {
   id: string;
-  createdAt: string;
+  companyName: string;
+  ticker: string;
+  shares: number;
+  sharesPercent: number;
+  weight: number;
 };
 
 export type ReportSend = {

@@ -1,5 +1,4 @@
-import axios from "axios";
-import { ReportAll, ReportSend, ReportType } from "../types/report";
+import { ReportBase, ReportSend, ReportType } from "../types/report";
 import { base } from "./base";
 import { GetParams } from "../types/common";
 
@@ -9,7 +8,7 @@ async function send(payload: ReportSend) {
 }
 
 async function getAll(params: GetParams) {
-  const resp = await base.get<{ reports: ReportAll[] }>("reports", {
+  const resp = await base.get<{ reports: ReportBase[] }>("reports", {
     params,
   });
   return resp.data;

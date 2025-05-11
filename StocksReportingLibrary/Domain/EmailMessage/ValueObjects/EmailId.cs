@@ -1,6 +1,6 @@
 ﻿using StocksReportingLibrary.Domain.Common;
 
-namespace StocksReportingLibrary.Domain.Email.EmailMessage.ValueObjects;
+namespace StocksReportingLibrary.Domain.EmailMessage.ValueObjects;
 
 public class EmailMessageId : ValueObject
 {

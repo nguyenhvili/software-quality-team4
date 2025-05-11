@@ -1,7 +1,7 @@
 using StocksReportingLibrary.Domain.Common;
 using StocksReportingLibrary.Domain.Email.EmailMessage.EmailAttachmentPath.ValueObjects;
 
-namespace StocksReportingLibrary.Domain.Email.EmailMessage.EmailAttachmentPath;
+namespace StocksReportingLibrary.Domain.EmailAttachmentPath;
 
 public class EmailAttachmentPath : AggregateRoot<EmailAttachmentPathId>
 {

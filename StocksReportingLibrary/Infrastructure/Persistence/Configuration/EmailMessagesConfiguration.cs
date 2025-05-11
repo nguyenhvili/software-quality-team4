@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using StocksReportingLibrary.Domain.Email.EmailMessage;
-using StocksReportingLibrary.Domain.Email.EmailMessage.EmailAttachmentPath;
 using StocksReportingLibrary.Domain.Email.EmailMessage.EmailAttachmentPath.ValueObjects;
-using StocksReportingLibrary.Domain.Email.EmailMessage.Enums;
-using StocksReportingLibrary.Domain.Email.EmailMessage.ValueObjects;
+using StocksReportingLibrary.Domain.EmailMessage.Enums;
+using StocksReportingLibrary.Domain.EmailAttachmentPath;
+using StocksReportingLibrary.Domain.EmailMessage;
+using StocksReportingLibrary.Domain.EmailMessage.ValueObjects;
 
 namespace StocksReportingLibrary.Infrastructure.Persistence.Configuration;
 
@@ -76,8 +76,8 @@ public sealed class EmailMessagesConfiguration
             .HasColumnName("Status")
             .IsRequired()
             .HasConversion(
-                status => (int)status.Status,
-                status => EmailSendStatus.Create((EEmailSendStatus)status));
+                status => (int)status,
+                status => ((EmailSendStatus)status));
 
         builder.OwnsOne(e => e.RetryCount, rc =>
         {

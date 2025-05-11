@@ -2,20 +2,20 @@ using ErrorOr;
 using Microsoft.Extensions.Logging;
 using StocksReportingLibrary.Application.Services.Email;
 using StocksReportingLibrary.Application.Services.Persistence;
-using StocksReportingLibrary.Domain.Email.EmailMessage.EmailAttachmentPath;
-using StocksReportingLibrary.Domain.Email.EmailMessage.Enums;
+using StocksReportingLibrary.Domain.EmailMessage.Enums;
+using StocksReportingLibrary.Domain.EmailAttachmentPath;
 
 namespace StocksReportingLibrary.Infrastructure.Email;
 
 public class EmailQueueService(
-    IQueryObject<Domain.Email.EmailMessage.EmailMessage> emailMessageQuery,
+    IQueryObject<Domain.EmailMessage.EmailMessage> emailMessageQuery,
     ILogger<EmailQueueService> logger,
-    IRepository<Domain.Email.EmailMessage.EmailMessage> emailMessageRepository)
+    IRepository<Domain.EmailMessage.EmailMessage> emailMessageRepository)
     : IEmailQueue
 {
-    private readonly IQueryObject<Domain.Email.EmailMessage.EmailMessage> _emailMessageQuery = emailMessageQuery;
+    private readonly IQueryObject<Domain.EmailMessage.EmailMessage> _emailMessageQuery = emailMessageQuery;
     private readonly ILogger<EmailQueueService> _logger = logger;
-    private readonly IRepository<Domain.Email.EmailMessage.EmailMessage> _emailMessageRepository = emailMessageRepository;
+    private readonly IRepository<Domain.EmailMessage.EmailMessage> _emailMessageRepository = emailMessageRepository;
 
     public async Task<ErrorOr<IEnumerable<IEmailQueue.EmailQueueItem>>> GetPendingEmailsAsync(int maxCount = 50)
     {
@@ -23,8 +23,7 @@ public class EmailQueueService(
         var pendingEmails = (await _emailMessageQuery.ExecuteAsync())
             .AsEnumerable()
             .Where(eM =>
-                eM.EmailSendStatus.Status == EEmailSendStatus.Pending ||
-                eM.EmailSendStatus.Status == EEmailSendStatus.Retryable)
+                eM.EmailSendStatus is EmailSendStatus.Pending or EmailSendStatus.Retryable)
             .Take(maxCount)
             .ToList();
 
@@ -97,7 +96,7 @@ public class EmailQueueService(
         string body,
         IEnumerable<string> attachmentPaths)
     {
-        var emailMessage = Domain.Email.EmailMessage.EmailMessage.Create(
+        var emailMessage = Domain.EmailMessage.EmailMessage.Create(
             recipient,
             subject,
             body,

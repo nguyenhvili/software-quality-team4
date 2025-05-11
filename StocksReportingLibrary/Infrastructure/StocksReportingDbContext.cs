@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using StocksReportingLibrary.Domain.Email;
 using StocksReportingLibrary.Domain.Report;
 using StocksReportingLibrary.Domain.Report.Holding;
 using Microsoft.Extensions.Logging;
-using StocksReportingLibrary.Domain.Email.EmailMessage;
+using StocksReportingLibrary.Domain.EmailMessage;
 
 namespace StocksReportingLibrary.Infrastructure;
 

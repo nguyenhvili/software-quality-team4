@@ -37,19 +37,6 @@ jobs:
       - name: Run tests
         run: dotnet test --no-build --verbosity normal ./StocksReporting.sln
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.20.8"
-
-      - name: Install FE dependencies
-        run: npm ci
-        working-directory: ./reactfrontend
-
-      - name: Build FE
-        run: npm run build
-        working-directory: ./reactfrontend
-
   deploy:
     needs: build
     environment:
@@ -60,12 +47,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # - name: Set up Node
-      #   uses: actions/setup-node@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
 
-      #   with:
-      #     node-version: lts/*
-      #     cache: "npm"
+        with:
+          node-version: lts/*
+          cache: "npm"
+
+      - name: Install FE dependencies
+        run: npm ci
+        working-directory: ./reactfrontend
+
+      - name: Build FE
+        run: npm run build
+        working-directory: ./reactfrontend
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

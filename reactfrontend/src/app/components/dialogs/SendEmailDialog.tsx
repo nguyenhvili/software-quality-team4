@@ -90,10 +90,17 @@ const SendEmailDialog: FC<SendEmailDialogProps> = (props) => {
         aria-hidden="true"
       />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl transition-all">
-          <DialogTitle className="text-lg font-semibold text-gray-900">
-            {formatDate(report.createdAt)}
+        <DialogPanel className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl transition-all">
+          <DialogTitle className="text-xl font-semibold text-gray-900 mb-4">
+            Send email
           </DialogTitle>
+
+          <div className="space-y-2 mb-6">
+            <p>
+              <strong>Report created on:</strong> {formatDate(report.createdAt)}
+            </p>
+          </div>
+
           <Table
             cols={cols}
             data={emails?.emails || []}

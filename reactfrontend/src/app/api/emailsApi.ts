@@ -2,7 +2,7 @@ import axios from "axios";
 import { Email, EmailCreate } from "../types/email";
 
 const axiosInstance = axios.create({
-  baseURL: `http://localhost:5025/`, //add BE url
+  baseURL: `https://pv260-ewdzffc2c5b0cqce.germanywestcentral-01.azurewebsites.net/`, //add BE url
 });
 
 async function create(payload: EmailCreate) {

@@ -2,42 +2,83 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop, gh-pages]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
 
-    - name: Restore dependencies
-      run: dotnet restore ./StocksReporting.sln
+      - name: Restore dependencies
+        run: dotnet restore ./StocksReporting.sln
 
-    - name: Build solution
-      run: dotnet build --no-restore ./StocksReporting.sln
+      - name: Build solution
+        run: dotnet build --no-restore ./StocksReporting.sln
 
-    - name: Run tests
-      run: dotnet test --no-build --verbosity normal ./StocksReporting.sln
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal ./StocksReporting.sln
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18.20.8'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.20.8"
 
-    - name: Install FE dependencies
-      run: npm ci
-      working-directory: ./reactfrontend
+      - name: Install FE dependencies
+        run: npm ci
+        working-directory: ./reactfrontend
 
-    - name: Build FE
-      run: npm run build
-      working-directory: ./reactfrontend
+      - name: Build FE
+        run: npm run build
+        working-directory: ./reactfrontend
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        working-directory: ./reactfrontend
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        working-directory: ./reactfrontend
+
+        with:
+          node-version: lts/*
+          cache: "npm"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        working-directory: ./reactfrontend
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        working-directory: ./reactfrontend
+        with:
+          path: "./dist"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        working-directory: ./reactfrontend

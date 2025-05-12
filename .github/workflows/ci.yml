@@ -53,6 +53,7 @@ jobs:
         with:
           node-version: lts/*
           cache: "npm"
+          cache-dependency-path: reactfrontend/package-lock.json
 
       - name: Install FE dependencies
         run: npm ci

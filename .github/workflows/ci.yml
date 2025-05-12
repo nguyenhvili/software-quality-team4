@@ -41,7 +41,7 @@ jobs:
     needs: build
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://terezahelanova.github.io/software-quality-team4/
     runs-on: ubuntu-latest
     steps:
       - name: Debug

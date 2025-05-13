@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { IconArrowLeft } from "../../assets/IconArrowLeft";
 import { IconArrowRight } from "../../assets/IconArrowRight";
 
 type PaginationProps = {
   page: number;
-  setPage: (page: number) => void;
+  setPage: Dispatch<SetStateAction<number>>;
   hasNext: boolean;
 };
 
@@ -16,7 +16,7 @@ const Pagination: FC<PaginationProps> = (props) => {
       <button
         className="p-1 rounded bg-gray-500 transition flex flex-row gap-2 items-center text-white px-2 justify-center disabled:opacity-40"
         disabled={page === 1}
-        onClick={() => setPage(page - 1)}
+        onClick={() => setPage((prevPage) => prevPage - 1)}
       >
         <IconArrowLeft className="w-5 h-5 text-white" />
         Previous
@@ -24,7 +24,7 @@ const Pagination: FC<PaginationProps> = (props) => {
       <p>{page}</p>
       <button
         className="p-1 rounded bg-gray-500 transition flex flex-row gap-2 items-center text-white px-2 w-26 justify-center disabled:opacity-40"
-        onClick={() => setPage(page + 1)}
+        onClick={() => setPage((prevPage) => prevPage + 1)}
         disabled={hasNext}
       >
         Next

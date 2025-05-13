@@ -22,6 +22,10 @@ builder.Services.AddCors(options =>
         policy => policy.WithOrigins("http://localhost:3000")
             .AllowAnyHeader()
             .AllowAnyMethod());
+    options.AddPolicy("AllowVercel",
+        policy => policy.WithOrigins("https://software-quality-team4-wine.vercel.app/")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
 
 builder.Services.AddControllers();

@@ -11,6 +11,6 @@ export default defineConfig({
         manifest: true,
       },
       server: {
-        port: process.env.PORT,
+        port: 3000,
       },
 })

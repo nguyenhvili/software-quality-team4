@@ -379,8 +379,6 @@ namespace Test.Integration.Api
                 return assert(result!);
             }
 
-            public When And() => this;
-
             private async Task TriggerReportJob()
             {
                 ISchedulerFactory schedulerFactory = new StdSchedulerFactory();

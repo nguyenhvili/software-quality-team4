@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod());
     options.AddPolicy("AllowVercel",
-        policy => policy.WithOrigins("https://software-quality-team4-wine.vercel.app/")
+        policy => policy.WithOrigins("https://software-quality-team4-wine.vercel.app")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -107,7 +107,8 @@ builder.Services.AddScoped<StocksReportingLibrary.Application.Services.File.IPar
 
 var app = builder.Build();
 
-app.UseCors("AllowLocalhost3000");
+// app.UseCors("AllowLocalhost3000");
+app.UseCors("AllowVercel"); 
 
 using (var scope = app.Services.CreateScope())
 {

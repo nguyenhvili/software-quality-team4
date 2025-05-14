@@ -74,9 +74,7 @@ public class CreateReportCommandHandler
             _logger.LogDebug("Created directory: {FolderPath}", folderPath);
         }
 
-        // For testing purposes, the path contains Guid as unique file identifier
-        string fileName = $"{command.CreatedAt:yyyy-MM-dd}_{Guid.NewGuid()}_stocks_report.csv";
-        //string fileName = $"{command.CreatedAt:yyyy-MM-dd}_stocks_report.csv";
+        string fileName = $"{command.CreatedAt:yyyy-MM-dd}_stocks_report.csv";
         string filePath = Path.Combine(folderPath, fileName);
 
         var reportResult = Domain.Report.Report.Create(

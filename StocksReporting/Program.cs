@@ -24,8 +24,6 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod());
 });
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -64,14 +62,10 @@ builder.Services.AddQuartz(q =>
 
     q.AddJob<CreateReportJob>(opts => opts.WithIdentity(jobKey));
 
-    // For testing purpose and for M2 showcase, the trigger is set to start at the start of the program
-    // The commented Cron schedule is set to trigger the trigger at midnight, first day of a month
-    // at 0 seconds, 0 minutes, 0 hours, 1st day of month, * every month, ? - any day of the week
     q.AddTrigger(opts => opts
         .ForJob(jobKey)
         .WithIdentity("CreateReportJobTrigger")
-        .StartNow());
-    //.WithCronSchedule("0 0 0 1 * ?"));
+        .WithCronSchedule("0 0 0 ? * MON"));
 
     var emailJobKey = new JobKey("EmailJob");
     q.AddJob<SendQueuedEmailsJob>(opts => opts.WithIdentity(emailJobKey));

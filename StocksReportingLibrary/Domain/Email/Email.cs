@@ -21,7 +21,7 @@ public class Email : AggregateRoot<EmailId>
 
     public static ErrorOr<Email> Create(string email)
     {
-        if (email == null || email.Length == 0)
+        if (string.IsNullOrWhiteSpace(email))
         {
             return Error.Validation("The email is empty!");
         }

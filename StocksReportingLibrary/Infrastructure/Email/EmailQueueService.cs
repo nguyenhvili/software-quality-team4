@@ -58,7 +58,7 @@ public class EmailQueueService(
             .AsEnumerable()
             .SingleOrDefault(eM => eM.Id.Value == emailId);
 
-        if (emailMessage == null)
+        if (emailMessage is null)
         {
             _logger.LogWarning("Email with ID: {EmailId} not found.", emailId);
             return;
@@ -78,7 +78,7 @@ public class EmailQueueService(
             .AsEnumerable()
             .SingleOrDefault(eM => eM.Id.Value == emailId);
 
-        if (emailMessage == null)
+        if (emailMessage is null)
         {
             _logger.LogWarning("Email with ID: {EmailId} not found.", emailId);
             return;

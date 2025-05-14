@@ -56,7 +56,7 @@ public class EmailMessage : AggregateRoot<EmailMessageId>
 
     public static ErrorOr<EmailMessage> Create(string recipient, string subject, string body, IEnumerable<EmailAttachmentPath.EmailAttachmentPath> attachments)
     {
-        if (recipient == null || recipient.Length == 0)
+        if (string.IsNullOrWhiteSpace(recipient))
         {
             return Error.Validation("The recipient is empty!");
         }
@@ -66,16 +66,16 @@ public class EmailMessage : AggregateRoot<EmailMessageId>
             return Error.Validation("The email is not in valid format!");
         }
 
-        if (subject == null || subject.Length == 0)
+        if (string.IsNullOrWhiteSpace(subject))
         {
             return Error.Validation("The subject is empty!");
         }
 
-        if (body == null || body.Length == 0)
+        if (string.IsNullOrWhiteSpace(body))
         {
             return Error.Validation("The body is empty!");
         }
-        if (attachments.Any(p => p.Path == null || p.Path.Length == 0))
+        if (attachments.Any(p => string.IsNullOrWhiteSpace(p.Path)))
         {
             return Error.Validation("The attachment path is empty!");
         }

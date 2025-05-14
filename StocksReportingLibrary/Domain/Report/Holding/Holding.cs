@@ -28,7 +28,7 @@ public class Holding : AggregateRoot<HoldingId>
 
     public static ErrorOr<Holding> Create(string company, string ticker, long shares, decimal sharesPercent, decimal weight)
     {
-        if (company == null || company.Length == 0)
+        if (string.IsNullOrWhiteSpace(company))
         {
             return Error.Validation("The company name is empty!");
         }

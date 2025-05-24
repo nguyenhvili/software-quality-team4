@@ -167,7 +167,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
         }
 
         await (
-            (await new When(_client).WithListEmailRequest(1, 10).Then()).ShouldBeSuccessful()
+            (await new When(_client).WithListEmailRequest(1, 100).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<ListEmailsEndpoint.Response>(result =>
         {
             result.Should().NotBeNull();
@@ -235,7 +235,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
         ).ShouldBeSuccessful();
 
         await (
-            (await new When(_client).WithListEmailRequest(1, 10).Then()).ShouldBeSuccessful()
+            (await new When(_client).WithListEmailRequest(1, 100).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<ListEmailsEndpoint.Response>(result =>
         {
             result.Emails.Any(e => e.Id == createdEmail2.Email.Id).Should().BeTrue();

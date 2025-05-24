@@ -58,6 +58,7 @@ builder.Services.AddResiliencePipeline("MailRetryPolicy", pipeline =>
 
 builder.Services.AddQuartz(q =>
 {
+    q.UseMicrosoftDependencyInjectionJobFactory();
     var jobKey = new JobKey("CreateReportJob");
 
     q.AddJob<CreateReportJob>(opts => opts.WithIdentity(jobKey));

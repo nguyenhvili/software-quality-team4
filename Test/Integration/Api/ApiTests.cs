@@ -372,7 +372,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
         private async Task TriggerReportJob()
         {
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-            IScheduler scheduler = await schedulerFactory.GetScheduler();
+            IScheduler scheduler = (await schedulerFactory.GetAllSchedulers())[0];
             await scheduler.Start();
 
             var jobDetail = JobBuilder

@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, feature/deploy ]
   pull_request:
     branches: [ main, develop ]
 
@@ -41,3 +41,32 @@ jobs:
     - name: Build FE
       run: npm run build
       working-directory: ./reactfrontend
+
+  deploy:
+    name: Publish & Deploy to Azure
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      # 1) Publish your ASP.NET Core web project into a local folder named "publish-output"
+      - name: Publish .NET WebAPI
+        run: |
+          dotnet publish StocksReporting/StocksReporting.Web.csproj \
+            --configuration Release \
+            --output ./publish-output
+
+      # 2) Deploy that "publish-output" folder to your Azure App Service
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'PV260'                # e.g. "my-stocks-reporting-api"
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: './publish-output'

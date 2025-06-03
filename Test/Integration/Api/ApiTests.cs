@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using CsvHelper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Quartz;
 using Quartz.Impl;
+using Quartz.Simpl;
 using StocksReportingLibrary.Application.Report;
 using StocksReportingLibrary.Application.Services.Scheduling;
 using StocksReportingLibrary.Configuration;
@@ -35,7 +37,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
     {
         var email = Guid.NewGuid() + "@example.com";
         await (
-            (await new When(_client).WithCreateEmailRequest(email).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithCreateEmailRequest(email).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<CreateEmailEndpoint.Response>(result =>
         {
             result.Should().NotBeNull();
@@ -47,7 +49,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task Should_ListEmails_ReturnEmails()
     {
         await (
-            (await new When(_client).WithListEmailRequest(1, 1).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithListEmailRequest(1, 1).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<ListEmailsEndpoint.Response>(result =>
         {
             result.Should().NotBeNull();
@@ -60,7 +62,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
     {
         var email = "delete@example.com";
         var createdEmail = await (
-            (await new When(_client).WithCreateEmailRequest(email).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithCreateEmailRequest(email).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<CreateEmailEndpoint.Response>(result =>
         {
             result.Should().NotBeNull();
@@ -68,7 +70,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
         });
 
         (
-            await new When(_client).WithEmailId(createdEmail.Email.Id).Then()
+            await new When(_client, _factory).WithEmailId(createdEmail.Email.Id).Then()
         ).ShouldBeSuccessful();
     }
 
@@ -76,7 +78,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task Should_GetReport_WithValidId()
     {
         var reports = await (
-            await new When(_client).WithCreateReportJob().WithListReportsRequest(1, 1).Then()
+            await new When(_client, _factory).WithCreateReportJob().WithListReportsRequest(1, 1).Then()
         )
             .ShouldBeSuccessful()
             .AndShouldReturn<ListReportsEndpoint.Response>(result =>
@@ -88,7 +90,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
 
         await (
             (
-                await new When(_client).WithReportId(reports.Reports.First().Id).Then()
+                await new When(_client, _factory).WithReportId(reports.Reports.First().Id).Then()
             ).ShouldBeSuccessful()
         ).AndShouldReturn<GetReportEndpoint.Response>(result =>
         {
@@ -101,7 +103,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task Should_ListReports_ReturnReports()
     {
         await (
-            await new When(_client).WithCreateReportJob().WithListReportsRequest(1, 10).Then()
+            await new When(_client, _factory).WithCreateReportJob().WithListReportsRequest(1, 10).Then()
         )
             .ShouldBeSuccessful()
             .AndShouldReturn<ListReportsEndpoint.Response>(result =>
@@ -115,7 +117,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task Should_SendReport_WithValidData()
     {
         var reports = await (
-            await new When(_client).WithCreateReportJob().WithListReportsRequest(1, 1).Then()
+            await new When(_client, _factory).WithCreateReportJob().WithListReportsRequest(1, 1).Then()
         )
             .ShouldBeSuccessful()
             .AndShouldReturn<ListReportsEndpoint.Response>(result =>
@@ -127,7 +129,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
 
         var email = Guid.NewGuid() + "@example.com";
         var createdEmail = await (
-            (await new When(_client).WithCreateEmailRequest(email).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithCreateEmailRequest(email).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<CreateEmailEndpoint.Response>(result =>
         {
             result.Should().NotBeNull();
@@ -138,7 +140,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
         await (
             (
                 await (
-                    new When(_client).WithSendReportRequest(
+                    new When(_client, _factory).WithSendReportRequest(
                         reports.Reports.First().Id,
                         [createdEmail.Email.Id]
                     )
@@ -163,11 +165,11 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
 
         foreach (var email in emails)
         {
-            (await new When(_client).WithCreateEmailRequest(email).Then()).ShouldBeSuccessful();
+            (await new When(_client, _factory).WithCreateEmailRequest(email).Then()).ShouldBeSuccessful();
         }
 
         await (
-            (await new When(_client).WithListEmailRequest(1, 10).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithListEmailRequest(1, 10).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<ListEmailsEndpoint.Response>(result =>
         {
             result.Should().NotBeNull();
@@ -179,7 +181,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task Should_SendReport_ToMultipleEmails()
     {
         var reports = await (
-            await new When(_client).WithCreateReportJob().WithListReportsRequest(1, 1).Then()
+            await new When(_client, _factory).WithCreateReportJob().WithListReportsRequest(1, 1).Then()
         )
             .ShouldBeSuccessful()
             .AndShouldReturn<ListReportsEndpoint.Response>(result =>
@@ -193,17 +195,17 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
         var email2 = Guid.NewGuid() + "@example.com";
 
         var createdEmail1 = await (
-            (await new When(_client).WithCreateEmailRequest(email1).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithCreateEmailRequest(email1).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<CreateEmailEndpoint.Response>(result => result);
 
         var createdEmail2 = await (
-            (await new When(_client).WithCreateEmailRequest(email2).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithCreateEmailRequest(email2).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<CreateEmailEndpoint.Response>(result => result);
 
         await (
             (
                 await (
-                    new When(_client).WithSendReportRequest(
+                    new When(_client, _factory).WithSendReportRequest(
                         reports.Reports.First().Id,
                         [createdEmail1.Email.Id, createdEmail2.Email.Id]
                     )
@@ -223,19 +225,19 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
         var email2 = Guid.NewGuid() + "@example.com";
 
         var createdEmail1 = await (
-            (await new When(_client).WithCreateEmailRequest(email1).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithCreateEmailRequest(email1).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<CreateEmailEndpoint.Response>(result => result);
 
         var createdEmail2 = await (
-            (await new When(_client).WithCreateEmailRequest(email2).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithCreateEmailRequest(email2).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<CreateEmailEndpoint.Response>(result => result);
 
         (
-            await new When(_client).WithEmailId(createdEmail1.Email.Id).Then()
+            await new When(_client, _factory).WithEmailId(createdEmail1.Email.Id).Then()
         ).ShouldBeSuccessful();
 
         await (
-            (await new When(_client).WithListEmailRequest(1, 10).Then()).ShouldBeSuccessful()
+            (await new When(_client, _factory).WithListEmailRequest(1, 10).Then()).ShouldBeSuccessful()
         ).AndShouldReturn<ListEmailsEndpoint.Response>(result =>
         {
             result.Emails.Any(e => e.Id == createdEmail2.Email.Id).Should().BeTrue();
@@ -246,19 +248,20 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
     public async Task Should_NotCreateEmail_WithInvalidEmail_ShouldFail()
     {
         (
-            await new When(_client).WithCreateEmailRequest("invalid-email").Then()
+            await new When(_client, _factory).WithCreateEmailRequest("invalid-email").Then()
         ).ShouldBeFailure();
     }
 
     [Fact]
     public async Task Should_GetReport_WithInvalidId_ShouldFail()
     {
-        (await new When(_client).WithReportId(Guid.NewGuid()).Then()).ShouldBeFailure();
+        (await new When(_client, _factory).WithReportId(Guid.NewGuid()).Then()).ShouldBeFailure();
     }
 
     private sealed class When : IAsyncEnumerable<When>
     {
         private readonly HttpClient _client;
+        private readonly WebApplicationFactory<Program> _factory;
         private CreateEmailEndpoint.Request? _createEmailRequest;
         private Guid? _emailId;
         private Guid? _reportId;
@@ -268,9 +271,10 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
         private HttpResponseMessage? _response;
         private bool _createReportJob = false;
 
-        public When(HttpClient client)
+        public When(HttpClient client, WebApplicationFactory<Program> factory)
         {
             _client = client;
+            _factory = factory;
         }
 
         public When WithCreateEmailRequest(string email)
@@ -380,8 +384,14 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Program>>
 
         private async Task TriggerReportJob()
         {
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-            IScheduler scheduler = await schedulerFactory.GetScheduler();
+            using var scope = _factory.Services.CreateScope();
+            var sp = scope.ServiceProvider;
+            var schedulerFactory = new StdSchedulerFactory();
+            var scheduler = await schedulerFactory.GetScheduler(); 
+            var quartzOptions = sp.GetRequiredService<IOptions<QuartzOptions>>();
+
+            scheduler.JobFactory = new MicrosoftDependencyInjectionJobFactory(sp, quartzOptions);
+
             await scheduler.Start();
 
             var jobDetail = JobBuilder

@@ -59,7 +59,7 @@ jobs:
       # 1) Publish your ASP.NET Core web project into a local folder named "publish-output"
       - name: Publish .NET WebAPI
         run: |
-          dotnet publish StocksReporting/StocksReporting.Web.csproj \
+          dotnet publish StocksReporting/StocksReporting.csproj \
             --configuration Release \
             --output ./publish-output
 
